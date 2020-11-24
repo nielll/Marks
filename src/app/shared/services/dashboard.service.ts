@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 
 import { Course } from '../interface/course.interface';
 import { Module } from '../interface/module.interface';
 import { Mark } from '../interface/mark.interface';
 
-const MODULES_API: string = 'http://localhost:3001';
+const MODULES_API: string = environment.API_URL;
 
 @Injectable()
 export class DashboardService {
