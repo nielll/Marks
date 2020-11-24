@@ -1,0 +1,18 @@
+<div>
+  <app-overview
+    class="d-block"
+    [courses]="course"
+    [modules]="modules"
+    [title]="title"
+    [activeCourse]="activeCourse"
+    [activeSubject]="activeSubject"
+    (changeCourse)="handleActiveCourse($event)"
+    (changeSubject)="handleActiveSubject($event)"
+  ></app-overview>
+  <app-marks
+    class="d-block"
+    [marks]="marks"
+    [activeCourse]="activeCourse"
+    [activeSubject]="activeSubject"
+  ></app-marks>
+</div>

@@ -1,0 +1,183 @@
+{
+  "kurse": [
+    {
+      "titel": "Bachelor Informatik"
+    },
+    {
+      "titel": "Passerelle"
+    }
+  ],
+  "semester": [
+    {
+      "kurs": "Bachelor Informatik",
+      "module": [
+        {
+          "name": "Datenbanksysteme I",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "name": "Diskrete Mathematik",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "name": "Analysis I",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "name": "Betriebssysteme I",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "name": "Objectorientierte Programmierung",
+          "beschreibung": "lorem ipsum dolores"
+        }
+      ]
+    },
+    {
+      "kurs": "Passerelle",
+      "module": [
+        {
+          "name": "Mathematik",
+          "beschreibung": "lorem ipsum dolores"
+        }
+      ]
+    },
+    {
+      "kurs": "Bachelor Informatik",
+      "module": [
+        {
+          "name": "Datenbanksysteme II",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "name": "Algorithmen und Systeme",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "name": "Analysis II",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "name": "Lineare Algebra",
+          "beschreibung": "lorem ipsum dolores"
+        }
+      ]
+    }
+  ],
+  "noten": [
+    {
+      "kurs": "Bachelor Informatik",
+      "fach": "Datenbanksysteme I",
+      "test_daten": [
+        {
+          "test_art": "Testate",
+          "tests": [
+            {
+              "titel": "Testat 1",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            },
+            {
+              "titel": "Testat 2",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            },
+            {
+              "titel": "Testat 3",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kurs": "Passerelle",
+      "fach": "Mathematik",
+      "test_daten": [
+        {
+          "test_art": "Testate",
+          "tests": [
+            {
+              "titel": "Testat 1",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            },
+            {
+              "titel": "Testat 2",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            },
+            {
+              "titel": "Testat 3",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kurs": "Bachelor Informatik",
+      "fach": "Datenbanksysteme I",
+      "test_daten": [
+        {
+          "test_art": "Semesterprüfung",
+          "tests": [
+            {
+              "titel": "Modulprüfung",
+              "arbeitspartner": [],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kurs": "Bachelor Informatik",
+      "fach": "Betriebssysteme I",
+      "test_daten": [
+        {
+          "test_art": "Testate",
+          "tests": [
+            {
+              "titel": "Testat 1",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            },
+            {
+              "titel": "Testat 2",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "0",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            },
+            {
+              "titel": "Testat 3",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

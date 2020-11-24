@@ -1,0 +1,57 @@
+.subject {
+  min-width: 250px;
+  margin: 5px 10px;
+  cursor: pointer;
+}
+
+.subject:first-child {
+  margin: 5px 10px 5px 10px;
+}
+
+.subject:last-child {
+  margin: 5px 15px 5px 10px;
+}
+
+.card:hover:not(.selected) {
+  box-shadow: 0 0 10px #80bdff;
+}
+
+.card.selected {
+  box-shadow: 0 0 10px #80bdff;
+}
+
+.module-wrap {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+.title_lines {
+  position: relative;
+  display: block;
+  font-size: 30px;
+  z-index: 1;
+  overflow: hidden;
+  text-align: center;
+  color: black;
+}
+
+.title_lines:before,
+.title_lines:after {
+  position: absolute;
+  top: 51%;
+  overflow: hidden;
+  width: 48%;
+  height: 1px;
+  content: "\a0";
+  background-color: #cccccc;
+  margin-left: 2%;
+}
+
+.title_lines:before {
+  margin-left: -50%;
+  text-align: right;
+}

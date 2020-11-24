@@ -1,0 +1,62 @@
+<div>
+  <h2>Noten</h2>
+  <ul>
+    <li *ngFor="let mark of getSpecificMarks(); let i = index">
+      <div *ngIf="i == 0" class="position-relative text-center">
+        <h3 class="title_lines">{{ mark["fach"] }}</h3>
+      </div>
+      <div *ngFor="let subject of mark['test_daten']">
+        <h5 class="font-italic">{{ subject["test_art"] }}</h5>
+        <div class="row">
+          <ul class="d-flex">
+            <li class="d-flex p-0" *ngFor="let tests of subject['tests']">
+              <div
+                [ngClass]="{
+                  bestanden:
+                    +tests.erreichte_punkte >= +tests.min_punkte_bestanden,
+                  nicht_bestanden:
+                    +tests.erreichte_punkte <= +tests.min_punkte_bestanden
+                }"
+                class="card"
+              >
+                <div class="card-body">
+                  <h5 class="card-title">{{ tests.titel }}</h5>
+                  <p class="card-text">
+                    Prüfungstyp:
+                    {{
+                      tests.arbeitspartner.length == 0
+                        ? "Einzelarbeit"
+                        : "Gruppenarbeit"
+                    }}
+                  </p>
+                  <div class="d-flex" *ngIf="tests.arbeitspartner.length > 0">
+                    <p>Team:&nbsp;</p>
+                    <p
+                      class="card-text"
+                      *ngFor="let partner of tests.arbeitspartner"
+                    >
+                      {{ partner }}
+                    </p>
+                  </div>
+                  <p class="card-text">
+                    Erreichte Punkte: {{ tests.erreichte_punkte }}
+                  </p>
+                  <p class="card-text">
+                    Maximale Punkte: {{ tests.max_punkte }}
+                  </p>
+                  <p class="card-text font-weight-bold">
+                    {{
+                      +tests.erreichte_punkte >= +tests.min_punkte_bestanden
+                        ? "bestanden"
+                        : "nicht bestanden"
+                    }}
+                  </p>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
