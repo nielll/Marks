@@ -6,7 +6,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Mark } from '../../shared/interface/mark.interface';
+import { Meta, Test, Mark } from '../../shared/interface/mark.interface';
 
 @Component({
   selector: 'app-marks',
@@ -15,28 +15,57 @@ import { Mark } from '../../shared/interface/mark.interface';
 })
 export class MarksComponent implements OnInit, OnChanges {
   @Input()
-  marks: Mark[];
+  marks: Meta[];
 
   @Input()
-  activeSubject: string;
+  filteredMarks: Meta[];
 
   @Input()
-  activeCourse: string;
+  activeModule: number;
+
+  @Input()
+  activeModuleName: string;
+
+  @Input()
+  activeCourse: number;
+
+  @Input()
+  activeCourseName: string;
+
+  @Input()
+  activeSemester: number;
+
+  @Output()
+  updateActiveModuleName: EventEmitter<void> = new EventEmitter<void>();
+
+  @Output()
+  updateMark: EventEmitter<Mark> = new EventEmitter<Mark>();
+
+  @Output()
+  setMetaById: EventEmitter<Meta> = new EventEmitter<Meta>();
 
   ngOnInit(): void {}
 
   ngOnChanges(changes) {}
 
-  getSpecificMarks(): any[] {
-    if (this.marks) {
-      return this.marks
+  getActiveMark(): Meta[] {
+    if (this.filteredMarks) {
+      return this.filteredMarks
         .map(
           (marks) =>
-            marks?.fach == this.activeSubject &&
-            marks?.kurs == this.activeCourse &&
+            +marks.module_id == this.activeModule &&
+            +marks.semester_id == this.activeSemester &&
             marks
         )
-        .filter((notFalse) => Boolean(notFalse) !== false);
+        .filter((marks) => marks);
     }
+  }
+
+  handleGetMetaById(meta: Meta) {
+    this.setMetaById.emit(meta);
+  }
+
+  handleUpdateMark(mark: Mark) {
+    this.updateMark.emit(mark);
   }
 }

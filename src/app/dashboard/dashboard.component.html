@@ -2,17 +2,27 @@
   <app-overview
     class="d-block"
     [courses]="course"
-    [modules]="modules"
+    [semester]="semester"
     [title]="title"
+    [activeSemester]="activeSemester"
     [activeCourse]="activeCourse"
-    [activeSubject]="activeSubject"
+    [activeModule]="activeModule"
+    (changeSemester)="handleActiveSemester($event)"
     (changeCourse)="handleActiveCourse($event)"
-    (changeSubject)="handleActiveSubject($event)"
+    (changeModule)="handleActiveModule($event)"
   ></app-overview>
   <app-marks
     class="d-block"
     [marks]="marks"
+    [filteredMarks]="filteredMarks"
     [activeCourse]="activeCourse"
-    [activeSubject]="activeSubject"
-  ></app-marks>
+    [activeCourseName]="activeCourseName"
+    [activeSemester]="activeSemester"
+    [activeModule]="activeModule"
+    [activeModuleName]="activeModuleName"
+    (setMetaById)="setMetaById()"
+    (updateMark)="updateMark($event)"
+  >
+    <app-mark-modal></app-mark-modal>
+  </app-marks>
 </div>

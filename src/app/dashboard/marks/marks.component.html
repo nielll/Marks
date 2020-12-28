@@ -1,11 +1,13 @@
 <div>
   <h2>Noten</h2>
   <ul>
-    <li *ngFor="let mark of getSpecificMarks(); let i = index">
+    <li *ngFor="let course of getActiveMark(); let i = index">
       <div *ngIf="i == 0" class="position-relative text-center">
-        <h3 class="title_lines">{{ mark["fach"] }}</h3>
+        <h3 class="title_lines">
+          {{ activeModuleName }}
+        </h3>
       </div>
-      <div *ngFor="let subject of mark['test_daten']">
+      <div *ngFor="let subject of course['test_daten']">
         <h5 class="font-italic">{{ subject["test_art"] }}</h5>
         <div class="row">
           <ul class="d-flex">
@@ -15,11 +17,20 @@
                   bestanden:
                     +tests.erreichte_punkte >= +tests.min_punkte_bestanden,
                   nicht_bestanden:
-                    +tests.erreichte_punkte <= +tests.min_punkte_bestanden
+                    +tests.erreichte_punkte < +tests.min_punkte_bestanden
                 }"
                 class="card"
               >
                 <div class="card-body">
+                  <app-mark-modal
+                    [course_id]="course.course_id"
+                    [module_id]="course.module_id"
+                    [semester_id]="course.semester_id"
+                    [group_id]="subject.group_id"
+                    [tests]="tests"
+                    (getMetaById)="handleGetMetaById($event)"
+                    (handleUpdateMark)="handleUpdateMark($event)"
+                  ></app-mark-modal>
                   <h5 class="card-title">{{ tests.titel }}</h5>
                   <p class="card-text">
                     Prüfungstyp:
@@ -35,7 +46,7 @@
                       class="card-text"
                       *ngFor="let partner of tests.arbeitspartner"
                     >
-                      {{ partner }}
+                      {{ partner }} &nbsp;
                     </p>
                   </div>
                   <p class="card-text">

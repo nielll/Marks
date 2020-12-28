@@ -14,7 +14,7 @@
   </div>
   <ul class="module-wrap">
     <li *ngFor="let module of getActiveModules(); let i = index">
-      <div *ngIf="module.kurs == activeCourse" class="pt-4 pb-5">
+      <div *ngIf="module.course_id == activeCourse" class="pt-4 pb-5">
         <div class="position-relative text-center">
           <h3 class="title_lines">Semester {{ i + 1 }}</h3>
         </div>
@@ -30,12 +30,19 @@
             >
               <div
                 [ngClass]="{
-                  selected: activeSubject == subject.name ? 'selected' : ''
+                  selected:
+                    activeModule == subject.module_id &&
+                    activeCourse == module.course_id &&
+                    activeSemester == module.semester_id
+                      ? 'selected'
+                      : ''
                 }"
                 class="card"
                 id="mod{{ i }}el{{ j }}"
                 #subject
-                (click)="handleSubjectOnClick(subject.name)"
+                (click)="
+                  handleModuleOnClick(subject.module_id, module.semester_id)
+                "
               >
                 <div class="card-body">
                   <h5 class="card-title">{{ subject.name }}</h5>

@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Course } from '../../shared/interface/course.interface';
-import { Module } from '../../shared/interface/module.interface';
+import { Semester, Module } from '../../shared/interface/semester.interface';
 
 @Component({
   selector: 'app-overview',
@@ -21,45 +21,49 @@ export class OverviewComponent implements OnInit, OnChanges {
   courses: Course[];
 
   @Input()
-  modules: Module[];
+  semester: Semester[];
 
   @Input()
   title: string;
 
   @Input()
-  activeCourse: string;
+  activeCourse: number;
 
   @Input()
-  activeSubject: string;
+  activeSemester: number;
+
+  @Input()
+  activeModule: number;
 
   @Output()
-  changeCourse: EventEmitter<string> = new EventEmitter<string>();
+  changeCourse: EventEmitter<number> = new EventEmitter<number>();
 
   @Output()
-  changeSubject: EventEmitter<string> = new EventEmitter<string>();
+  changeSemester: EventEmitter<number> = new EventEmitter<number>();
+
+  @Output()
+  changeModule: EventEmitter<number> = new EventEmitter<number>();
 
   ngOnInit(): void {}
 
   ngOnChanges(changes) {}
 
-  getMarksOnSubjectChange(): Module[] {
-    //recursion
-    //this.modules.find((module) => module['module']);
-    return this.modules;
+  handleModuleOnClick(subject: number, semester: number) {
+    // console.log('subject' + subject, 'semester' + semester);
+    this.changeSemester.emit(semester);
+    this.changeModule.emit(subject);
   }
 
-  handleSubjectOnClick(subject: string) {
-    this.changeSubject.emit(subject);
+  handleCourseChange(course_name: string) {
+    var course_id = this.courses.find((course) => course.titel == course_name)
+      .course_id;
+    this.changeCourse.emit(course_id);
   }
 
-  handleCourseChange(course: string) {
-    this.changeCourse.emit(course);
-  }
-
-  getActiveModules(): Module[] {
-    if (this.modules) {
-      return this.modules
-        .map((module) => module.kurs == this.activeCourse && module)
+  getActiveModules(): Semester[] {
+    if (this.semester) {
+      return this.semester
+        .map((module) => module.course_id == this.activeCourse && module)
         .filter((noFalse) => Boolean(noFalse) !== false);
     }
   }
