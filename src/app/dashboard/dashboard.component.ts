@@ -4,6 +4,7 @@ import { Course } from '../shared/interface/course.interface';
 import { Semester, Module } from '../shared/interface/semester.interface';
 import { Meta, Test, Mark } from '../shared/interface/mark.interface';
 import { filter as _filter, find as _find } from 'lodash';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +25,10 @@ export class DashboardComponent implements OnInit {
   activeModule: number;
   activeModuleName: string;
 
-  constructor(private moduleService: DashboardService) {}
+  constructor(
+    private moduleService: DashboardService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.moduleService.getCourse().subscribe((data: Course[]) => {
@@ -113,24 +117,27 @@ export class DashboardComponent implements OnInit {
   }
 
   getMetaId(markObj: any): number {
-    return +this.marks.map(
-      (meta) =>
-        meta.course_id == markObj.course_id &&
-        meta.module_id == markObj.module_id &&
-        meta.semester_id == markObj.semester_id &&
-        meta
-    )[0].id;
+    return this.marks
+      .map(
+        (meta) =>
+          meta.course_id == markObj.course_id &&
+          meta.module_id == markObj.module_id &&
+          meta.semester_id == markObj.semester_id &&
+          meta
+      )
+      .filter((meta) => meta)[0].id;
   }
 
   getSpecificMeta(markObj: any): Meta {
-    console.log(markObj);
-    return this.marks.map(
-      (meta) =>
-        meta.course_id == markObj.course_id &&
-        meta.semester_id == markObj.semester_id &&
-        meta.module_id == markObj.module_id &&
-        meta
-    )[0];
+    return this.marks
+      .map(
+        (meta) =>
+          meta.course_id == markObj.course_id &&
+          meta.semester_id == markObj.semester_id &&
+          meta.module_id == markObj.module_id &&
+          meta
+      )
+      .filter((meta) => meta)[0];
   }
 
   getMarkId(markObj: any): number {
@@ -138,7 +145,7 @@ export class DashboardComponent implements OnInit {
 
     const groupObj = metaObj.test_daten
       .map((groups) => groups.group_id == markObj.group_id && groups)
-      .filter((arr) => arr)[0];
+      .filter((groups) => groups)[0];
 
     return groupObj.tests.findIndex(
       (tests) => +tests.test_id == +markObj.updateableMark.test_id
@@ -215,10 +222,10 @@ export class DashboardComponent implements OnInit {
       this.moduleService
         .deleteMark(this.createDeletableMeta(markObj), this.getMetaId(markObj))
         .subscribe((e) =>
-          console.log('Mark has been updated successfully!', e)
+          this.toastr.success('Mark has been updated successfully!')
         );
     } catch (e: any) {
-      console.error('Error has been occurred during deleting process', e);
+      this.toastr.error('Error has been occurred during deleting process');
     }
   }
 
@@ -227,10 +234,10 @@ export class DashboardComponent implements OnInit {
       this.moduleService
         .updateMark(this.createUpdateableMeta(markObj), this.getMetaId(markObj))
         .subscribe((e) =>
-          console.log('Mark has been updated successfully!', e)
+          this.toastr.success('Mark has been updated successfully!')
         );
     } catch (e: any) {
-      console.error('Error has been occurred during update process', e);
+      this.toastr.error('Error has been occurred during update process');
     }
   }
 }

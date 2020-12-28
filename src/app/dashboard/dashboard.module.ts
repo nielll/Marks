@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 // containers
 import { DashboardComponent } from './dashboard.component';
@@ -31,6 +33,8 @@ import { DashboardService } from '../shared/services/dashboard.service';
     NgbModule,
     FormsModule,
     FontAwesomeModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   exports: [DashboardComponent],
   providers: [DashboardService], //service
