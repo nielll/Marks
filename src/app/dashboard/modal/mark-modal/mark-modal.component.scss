@@ -1,6 +1,21 @@
-.icon {
+.topcontainter {
   position: absolute;
   right: 5px;
   top: 10px;
   color: black;
+}
+
+.icon {
+  padding: 5px 7px;
+}
+
+.noInput {
+  display: block;
+  border-style: hidden;
+  background-color: transparent;
+  width: 20px;
+}
+
+.noInput:focus {
+  outline: none;
 }

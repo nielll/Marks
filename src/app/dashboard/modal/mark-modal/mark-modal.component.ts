@@ -4,7 +4,11 @@ import {
   ModalDismissReasons,
   NgbModalOptions,
 } from '@ng-bootstrap/ng-bootstrap';
-import { faPencilAlt, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPencilAlt,
+  faEraser,
+  IconDefinition,
+} from '@fortawesome/free-solid-svg-icons';
 import { Meta, Mark } from '../../../shared/interface/mark.interface';
 import { Metas, Tests, Marks } from '../../../shared/models/mark.model';
 
@@ -15,6 +19,7 @@ import { Metas, Tests, Marks } from '../../../shared/models/mark.model';
 })
 export class MarkModalComponent implements OnInit {
   pencilIcon: IconDefinition = faPencilAlt;
+  eraseIcon: IconDefinition = faEraser;
   closeResult: string;
   modalOptions: NgbModalOptions;
   constructor(private modalService: NgbModal) {
@@ -77,20 +82,37 @@ export class MarkModalComponent implements OnInit {
     }
   }
 
-  updateMark(
-    mark: Mark,
+  handleSubmitUpdateMark(
+    values: any,
+    isValid: boolean,
     course_id: number,
     semester_id: number,
     module_id: number,
     group_id: number
   ) {
-    const markObj = {
-      course_id,
-      semester_id,
-      module_id,
-      group_id,
-      updateableMark: new Marks(mark),
-    };
-    this.handleUpdateMark.emit(markObj);
+    if (isValid) {
+      // create Array from input
+      if (values.arbeitspartner.length == 0) {
+        values.arbeitspartner = [];
+      } else if (!Array.isArray(values.arbeitspartner)) {
+        values.arbeitspartner = String(values.arbeitspartner)
+          .split(/[\s]{0,}[,][\s]{0,}/)
+          .filter((partner) => partner.length > 0);
+      } else {
+        values.arbeitspartner = values.arbeitspartner.filter(
+          (partner) => partner.length > 0
+        );
+      }
+
+      const markObj = {
+        course_id,
+        semester_id,
+        module_id,
+        group_id,
+        updateableMark: new Marks(values),
+      };
+
+      this.handleUpdateMark.emit(markObj);
+    }
   }
 }

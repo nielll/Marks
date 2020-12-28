@@ -123,6 +123,7 @@ export class DashboardComponent implements OnInit {
   }
 
   createUpdateableMeta(markObj: any): Meta {
+    console.log(markObj);
     let metaObj = this.marks.map(
       (meta) =>
         meta.course_id == markObj.course_id &&
@@ -131,18 +132,18 @@ export class DashboardComponent implements OnInit {
         meta
     )[0];
 
-    const groupObj = metaObj.test_daten.map(
-      (groups) => groups.group_id == markObj.group_id && groups
-    )[0];
+    const groupObj = metaObj.test_daten
+      .map((groups) => groups.group_id == markObj.group_id && groups)
+      .filter((arr) => arr)[0];
 
     const index = groupObj.tests.findIndex(
       (tests) => +tests.test_id == +markObj.updateableMark.test_id
     );
 
     if (index >= 0) {
-      metaObj.test_daten.map(
-        (groups) => +groups.group_id == +markObj.group_id && groups
-      )[0].tests[index] = markObj.updateableMark;
+      metaObj.test_daten
+        .map((groups) => +groups.group_id == +markObj.group_id && groups)
+        .filter((arr) => arr)[0].tests[index] = markObj.updateableMark;
 
       return metaObj;
     } else {
