@@ -39,7 +39,10 @@ export class MarksComponent implements OnInit, OnChanges {
   updateActiveModuleName: EventEmitter<void> = new EventEmitter<void>();
 
   @Output()
-  updateMark: EventEmitter<Mark> = new EventEmitter<Mark>();
+  updateMark: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  deleteMark: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
   setMetaById: EventEmitter<Meta> = new EventEmitter<Meta>();
@@ -65,7 +68,11 @@ export class MarksComponent implements OnInit, OnChanges {
     this.setMetaById.emit(meta);
   }
 
-  handleUpdateMark(mark: Mark) {
-    this.updateMark.emit(mark);
+  handleDeleteMark(markObj: any) {
+    this.deleteMark.emit(markObj);
+  }
+
+  handleUpdateMark(markObj: any) {
+    this.updateMark.emit(markObj);
   }
 }

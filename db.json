@@ -97,9 +97,10 @@
           "tests": [
             {
               "test_id": 1,
-              "titel": "Testat",
+              "titel": "Testat 1",
               "arbeitspartner": [
-                "asdf"
+                "Ramon",
+                "Timon"
               ],
               "erreichte_punkte": "2",
               "max_punkte": "2",
@@ -135,8 +136,8 @@
               "test_id": 1,
               "titel": "Modulprüfung",
               "arbeitspartner": [
-                "jk",
-                "asdf"
+                "test",
+                "test"
               ],
               "erreichte_punkte": "2",
               "max_punkte": "2",

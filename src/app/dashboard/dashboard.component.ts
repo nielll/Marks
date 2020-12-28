@@ -122,23 +122,51 @@ export class DashboardComponent implements OnInit {
     )[0].id;
   }
 
-  createUpdateableMeta(markObj: any): Meta {
+  getSpecificMeta(markObj: any): Meta {
     console.log(markObj);
-    let metaObj = this.marks.map(
+    return this.marks.map(
       (meta) =>
         meta.course_id == markObj.course_id &&
         meta.semester_id == markObj.semester_id &&
         meta.module_id == markObj.module_id &&
         meta
     )[0];
+  }
+
+  getMarkId(markObj: any): number {
+    let metaObj = this.getSpecificMeta(markObj);
 
     const groupObj = metaObj.test_daten
       .map((groups) => groups.group_id == markObj.group_id && groups)
       .filter((arr) => arr)[0];
 
-    const index = groupObj.tests.findIndex(
+    return groupObj.tests.findIndex(
       (tests) => +tests.test_id == +markObj.updateableMark.test_id
     );
+  }
+
+  createDeletableMeta(markObj: any): Meta {
+    let metaObj = this.getSpecificMeta(markObj);
+    const index = this.getMarkId(markObj);
+
+    // Continue implement deleting -> just create a new meta object excluding the mark which has to be deleted
+    if (index >= 0) {
+      let test_daten = metaObj.test_daten
+        .map((groups) => +groups.group_id == +markObj.group_id && groups)
+        .filter((arr) => arr)[0]
+        .tests.slice(index, 1);
+
+      console.log(test_daten);
+
+      return metaObj;
+    } else {
+      throw new Error('Object could not be updated with changed Mark');
+    }
+  }
+
+  createUpdateableMeta(markObj: any): Meta {
+    const metaObj = this.getSpecificMeta(markObj);
+    const index = this.getMarkId(markObj);
 
     if (index >= 0) {
       metaObj.test_daten
@@ -152,7 +180,6 @@ export class DashboardComponent implements OnInit {
   }
 
   handleActiveSemester(activeSemester: number) {
-    console.log('activeSemester', activeSemester);
     this.activeSemester = activeSemester;
   }
 
@@ -181,6 +208,18 @@ export class DashboardComponent implements OnInit {
       .subscribe((data) => {
         this.activeMeta = data;
       });
+  }
+
+  deleteMark(markObj: any) {
+    try {
+      this.moduleService
+        .deleteMark(this.createDeletableMeta(markObj), this.getMetaId(markObj))
+        .subscribe((e) =>
+          console.log('Mark has been updated successfully!', e)
+        );
+    } catch (e: any) {
+      console.error('Error has been occurred during deleting process', e);
+    }
   }
 
   updateMark(markObj: any) {

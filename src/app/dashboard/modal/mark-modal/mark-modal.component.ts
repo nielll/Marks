@@ -48,6 +48,9 @@ export class MarkModalComponent implements OnInit {
   handleUpdateMark: EventEmitter<any> = new EventEmitter<Mark>();
 
   @Output()
+  handleDeleteMark: EventEmitter<any> = new EventEmitter<Mark>();
+
+  @Output()
   handleMetaById: EventEmitter<Meta> = new EventEmitter<Meta>();
 
   @Output()
@@ -80,6 +83,24 @@ export class MarkModalComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  handleDeletionMark(mark: Mark) {
+    alert('Noch nicht vollständig integriert');
+    return;
+
+    let confirmDeletion = confirm('Willst du die Note wirklich löschen?');
+    if (!confirmDeletion) return;
+
+    const markObj = {
+      course_id: this.course_id,
+      semester_id: this.semester_id,
+      module_id: this.module_id,
+      group_id: this.group_id,
+      updateableMark: mark,
+    };
+
+    this.handleDeleteMark.emit(markObj);
   }
 
   handleSubmitUpdateMark(

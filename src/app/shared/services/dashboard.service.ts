@@ -62,5 +62,13 @@ export class DashboardService {
 
   deleteCourse() {}
   deleteModule() {}
-  deleteMarks() {}
+  deleteMark(metaObj: Meta, index: number): Observable<Meta> {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*');
+
+    return this.http.put<Meta>(`${MODULES_API}/noten/${index}`, metaObj, {
+      headers,
+    });
+  }
 }

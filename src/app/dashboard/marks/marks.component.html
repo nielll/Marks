@@ -29,6 +29,7 @@
                     [group_id]="subject.group_id"
                     [tests]="tests"
                     (getMetaById)="handleGetMetaById($event)"
+                    (handleDeleteMark)="handleDeleteMark($event)"
                     (handleUpdateMark)="handleUpdateMark($event)"
                   ></app-mark-modal>
                   <h5 class="card-title">{{ tests.titel }}</h5>
