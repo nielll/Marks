@@ -3,9 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 
-import { Course } from '../../shared/interface/course.interface';
+import { Course } from '../interface/course.interface';
 import { Semester, Module } from '../interface/semester.interface';
-import { Meta, Test, Mark } from '../../shared/interface/mark.interface';
+import { Meta, Test, Mark } from '../interface/mark.interface';
 
 const MODULES_API: string = environment.API_URL;
 

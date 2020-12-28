@@ -1,0 +1,94 @@
+<button class="icon btn btn-link" (click)="open(mymodal)">
+  <fa-icon [icon]="pencilIcon"></fa-icon>
+</button>
+
+<!-- Modal -->
+<ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ tests.titel }}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #form="ngForm" novalidate>
+      <div class="d-flex">
+        <p class="pr-3">Course-Id: {{ course_id }}</p>
+        <p class="pr-3">Module-Id: {{ group_id }}</p>
+        <p>Mark-Id: {{ tests.test_id }}</p>
+      </div>
+      <div>
+        <label for="partner">Titel:&nbsp;</label>
+        <input
+          id="titel"
+          type="text"
+          name="titel"
+          [ngModel]="tests.titel"
+          requierd
+        />
+      </div>
+      <div>
+        <label for="partner">Partner:&nbsp;</label>
+        <input
+          id="partner"
+          type="text"
+          name="arbeitspartner"
+          [ngModel]="tests.arbeitspartner"
+        />
+      </div>
+      <div>
+        <label for="partner">Erreichte Punkte:&nbsp;</label>
+        <input
+          id="e_punkte"
+          type="text"
+          name="erreichte_punkte"
+          [ngModel]="tests.erreichte_punkte"
+          required
+        />
+      </div>
+      <div>
+        <label for="partner">Maximale Punkte:&nbsp;</label>
+        <input
+          id="max_punkte"
+          type="text"
+          name="max_punkte"
+          [ngModel]="tests.max_punkte"
+          required
+        />
+      </div>
+      <div>
+        <label for="partner">Min. zu erreichende Punkte:&nbsp;</label>
+        <input
+          id="min_punkte"
+          type="text"
+          name="min_punkte_bestanden"
+          [ngModel]="tests.min_punkte_bestanden"
+          required
+        />
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.dismiss('Cross click')"
+    >
+      Zurück
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="updateMark(tests, course_id, semester_id, module_id, group_id)"
+      (click)="modal.close('Save click')"
+      [disabled]="!form.invalid"
+    >
+      Ändern
+    </button>
+  </div>
+</ng-template>
