@@ -98,10 +98,7 @@
             {
               "test_id": 1,
               "titel": "Testat 1",
-              "arbeitspartner": [
-                "Ramon",
-                "Timon"
-              ],
+              "arbeitspartner": ["Ramon", "Timon"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -109,9 +106,7 @@
             {
               "test_id": 2,
               "titel": "Testat 2",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -119,9 +114,7 @@
             {
               "test_id": 3,
               "titel": "Testat 3",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -135,10 +128,7 @@
             {
               "test_id": 1,
               "titel": "Modulprüfung",
-              "arbeitspartner": [
-                "test",
-                "test"
-              ],
+              "arbeitspartner": ["test", "test"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -160,9 +150,7 @@
             {
               "test_id": 1,
               "titel": "Test 1",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -170,9 +158,7 @@
             {
               "test_id": 2,
               "titel": "Test 2",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -180,9 +166,7 @@
             {
               "test_id": 3,
               "titel": "Testat 3",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -204,9 +188,7 @@
             {
               "test_id": 1,
               "titel": "Testat 1",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -214,9 +196,7 @@
             {
               "test_id": 2,
               "titel": "Testat 2",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "0",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -224,9 +204,7 @@
             {
               "test_id": 3,
               "titel": "Testat 3",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -234,55 +212,6 @@
           ]
         }
       ]
-    },
-    {
-      "course_id": 1,
-      "semester_id": 1,
-      "module_id": 2,
-      "test_daten": [],
-      "id": 4
-    },
-    {
-      "course_id": 1,
-      "semester_id": 3,
-      "module_id": 2,
-      "test_daten": [],
-      "id": 5
-    },
-    {
-      "course_id": 1,
-      "semester_id": 3,
-      "module_id": 3,
-      "test_daten": [],
-      "id": 6
-    },
-    {
-      "course_id": 1,
-      "semester_id": 3,
-      "module_id": 1,
-      "test_daten": [],
-      "id": 7
-    },
-    {
-      "course_id": 1,
-      "semester_id": 1,
-      "module_id": 3,
-      "test_daten": [],
-      "id": 8
-    },
-    {
-      "course_id": 1,
-      "semester_id": 1,
-      "module_id": 4,
-      "test_daten": [],
-      "id": 9
-    },
-    {
-      "course_id": 1,
-      "semester_id": 1,
-      "module_id": 5,
-      "test_daten": [],
-      "id": 10
     }
   ]
 }

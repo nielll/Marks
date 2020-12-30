@@ -21,9 +21,12 @@
     [activeModule]="activeModule"
     [activeModuleName]="activeModuleName"
     (setMetaById)="setMetaById()"
+    (addMark)="addMark($event)"
     (deleteMark)="deleteMark($event)"
     (updateMark)="updateMark($event)"
+    (addGroup)="addGroup($event)"
+    (deleteGroup)="deleteGroup($event)"
+    (changeGroup)="changeGroup($event)"
   >
-    <app-mark-modal></app-mark-modal>
   </app-marks>
 </div>

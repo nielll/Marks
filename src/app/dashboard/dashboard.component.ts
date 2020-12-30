@@ -3,6 +3,7 @@ import { DashboardService } from '../shared/services/dashboard.service';
 import { Course } from '../shared/interface/course.interface';
 import { Semester, Module } from '../shared/interface/semester.interface';
 import { Meta, Test, Mark } from '../shared/interface/mark.interface';
+import { Metas, Tests, Marks } from '../shared/models/mark.model';
 import { filter as _filter, find as _find } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 
@@ -116,74 +117,58 @@ export class DashboardComponent implements OnInit {
     ).module[0].module_id;
   }
 
-  getMetaId(markObj: any): number {
-    return this.marks
-      .map(
-        (meta) =>
-          meta.course_id == markObj.course_id &&
-          meta.module_id == markObj.module_id &&
-          meta.semester_id == markObj.semester_id &&
-          meta
-      )
-      .filter((meta) => meta)[0].id;
-  }
-
-  getSpecificMeta(markObj: any): Meta {
-    return this.marks
-      .map(
+  async getSpecificMeta(markObj: any): Promise<Meta> {
+    // Check if a meta exists for a module, if not create one
+    if (
+      this.marks.find(
         (meta) =>
           meta.course_id == markObj.course_id &&
           meta.semester_id == markObj.semester_id &&
-          meta.module_id == markObj.module_id &&
-          meta
+          meta.module_id == markObj.module_id
       )
-      .filter((meta) => meta)[0];
-  }
-
-  getMarkId(markObj: any): number {
-    let metaObj = this.getSpecificMeta(markObj);
-
-    const groupObj = metaObj.test_daten
-      .map((groups) => groups.group_id == markObj.group_id && groups)
-      .filter((groups) => groups)[0];
-
-    return groupObj.tests.findIndex(
-      (tests) => +tests.test_id == +markObj.updateableMark.test_id
-    );
-  }
-
-  createDeletableMeta(markObj: any): Meta {
-    let metaObj = this.getSpecificMeta(markObj);
-    const index = this.getMarkId(markObj);
-
-    // Continue implement deleting -> just create a new meta object excluding the mark which has to be deleted
-    if (index >= 0) {
-      let test_daten = metaObj.test_daten
-        .map((groups) => +groups.group_id == +markObj.group_id && groups)
-        .filter((arr) => arr)[0]
-        .tests.slice(index, 1);
-
-      console.log(test_daten);
-
-      return metaObj;
+    ) {
+      return this.marks.find(
+        (meta) =>
+          meta.course_id == markObj.course_id &&
+          meta.semester_id == markObj.semester_id &&
+          meta.module_id == markObj.module_id
+      );
     } else {
-      throw new Error('Object could not be updated with changed Mark');
+      const newMeta = new Metas(
+        this.activeCourse,
+        this.activeSemester,
+        this.activeModule,
+        [],
+        this.createNewMarkId()
+      );
+      // not neccessary?
+      //this.marks.push(newMeta);
+      await this.addMeta(newMeta);
+
+      return newMeta;
     }
   }
 
-  createUpdateableMeta(markObj: any): Meta {
-    const metaObj = this.getSpecificMeta(markObj);
-    const index = this.getMarkId(markObj);
+  getMarkId(metaObj: Meta, markObj: any): number {
+    return metaObj.test_daten
+      .find((groups) => groups.group_id == markObj.group_id)
+      .tests.findIndex(
+        (tests) => +tests.test_id == +markObj.updateableMark.test_id
+      );
+  }
 
-    if (index >= 0) {
-      metaObj.test_daten
-        .map((groups) => +groups.group_id == +markObj.group_id && groups)
-        .filter((arr) => arr)[0].tests[index] = markObj.updateableMark;
+  createNewSemesterId(): number {
+    return this.semester.length > 0
+      ? this.semester.reduce((prev, curr) => (prev.id < curr.id ? curr : prev))
+          .id + 1
+      : 1;
+  }
 
-      return metaObj;
-    } else {
-      throw new Error('Object could not be updated with changed Mark');
-    }
+  createNewMarkId(): number {
+    return this.marks.length > 0
+      ? this.marks.reduce((prev, curr) => (prev.id < curr.id ? curr : prev))
+          .id + 1
+      : 1;
   }
 
   handleActiveSemester(activeSemester: number) {
@@ -217,27 +202,202 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  deleteMark(markObj: any) {
+  /**
+   * create an updated meta object in order to push to server
+   * Update, add, remove a Mark Object
+   *
+   * Set param adding to true when adding, false to removing
+   * @param markObj any
+   * @param action add, remove, update
+   */
+  createUpdateableMeta(metaObj: Meta, markObj: any, action: string): Meta {
+    if (action == 'add') {
+      metaObj.test_daten
+        .find((groups) => +groups.group_id == +markObj.group_id)
+        .tests.push(markObj.updateableMark);
+    } else if (action == 'update') {
+      let index = this.getMarkId(metaObj, markObj);
+
+      metaObj.test_daten.find(
+        (groups) => +groups.group_id == +markObj.group_id
+      ).tests[index] = markObj.updateableMark;
+    } else if (action == 'remove') {
+      let index = this.getMarkId(metaObj, markObj);
+
+      metaObj.test_daten
+        .find((groups) => +groups.group_id == +markObj.group_id)
+        .tests.splice(index, 1);
+    } else {
+      throw new Error("Falscher 'action' param!");
+    }
+
+    return metaObj;
+  }
+
+  /**
+   * create an updated meta object in order to push to server
+   * Update, add, remove a Test/Group Object
+   *
+   * Set param adding to true when adding, false to removing
+   * @param groupObj any
+   * @param action add, remove, update
+   */
+  createUpdateableGroup(metaObj: Meta, groupObj: any, action: string): Meta {
+    if (action == 'add') {
+      metaObj.test_daten.push(groupObj.updateableGroup);
+    } else if (action == 'remove') {
+      let index = metaObj.test_daten.findIndex(
+        (group) => group.group_id == groupObj.group_id
+      );
+
+      metaObj.test_daten.splice(index, 1);
+    } else if (action == 'update') {
+      let index = metaObj.test_daten.findIndex(
+        (group) => group.group_id == groupObj.group_id
+      );
+
+      metaObj.test_daten.splice(index, 1, groupObj.updateableGroup);
+    } else {
+      throw new Error("Falscher 'action' param!");
+    }
+
+    return metaObj;
+  }
+
+  async addMeta(meta: Meta) {
     try {
       this.moduleService
-        .deleteMark(this.createDeletableMeta(markObj), this.getMetaId(markObj))
-        .subscribe((e) =>
-          this.toastr.success('Mark has been updated successfully!')
-        );
+        .addMeta(meta)
+        .subscribe((e) => console.log('Meta added', e));
+
+      try {
+        // update local data with changed data from backend
+        this.moduleService.getMarks().subscribe((data: Meta[]) => {
+          this.marks = data;
+
+          // filtered arrays based on activeMarks
+          this.filteredMarks = this.getAllMarksPerCourse();
+        });
+      } catch (e: any) {
+        throw new Error(e);
+      }
     } catch (e: any) {
-      this.toastr.error('Error has been occurred during deleting process');
+      this.toastr.error('Error has been detected');
+      throw new Error(e);
     }
   }
 
+  addMark(markObj: any) {
+    this.getSpecificMeta(markObj).then((metaObj) => {
+      try {
+        this.moduleService
+          .updateMark(
+            this.createUpdateableMeta(metaObj, markObj, 'add'),
+            metaObj.id
+          )
+          .subscribe((e) =>
+            this.toastr.success('Mark has been added successfully!')
+          );
+      } catch (e: any) {
+        this.toastr.error('Error has been detected during adding process');
+        throw new Error(e);
+      }
+    });
+  }
+
+  deleteMark(markObj: any) {
+    this.getSpecificMeta(markObj).then((metaObj) => {
+      try {
+        this.moduleService
+          .updateMark(
+            this.createUpdateableMeta(metaObj, markObj, 'remove'),
+            metaObj.id
+          )
+          .subscribe((e) =>
+            this.toastr.success('Mark has been updated successfully!')
+          );
+      } catch (e: any) {
+        this.toastr.error('Error has been detected during deleting process');
+        throw new Error(e);
+      }
+    });
+  }
+
   updateMark(markObj: any) {
-    try {
-      this.moduleService
-        .updateMark(this.createUpdateableMeta(markObj), this.getMetaId(markObj))
-        .subscribe((e) =>
-          this.toastr.success('Mark has been updated successfully!')
+    this.getSpecificMeta(markObj).then((metaObj) => {
+      try {
+        this.moduleService
+          .updateMark(
+            this.createUpdateableMeta(metaObj, markObj, 'update'),
+            metaObj.id
+          )
+          .subscribe((e) =>
+            this.toastr.success('Mark has been updated successfully!')
+          );
+      } catch (e: any) {
+        this.toastr.error('Error has been detected during update process');
+        throw new Error(e);
+      }
+    });
+  }
+
+  addGroup(groupObj: any) {
+    this.getSpecificMeta(groupObj).then((metaObj) => {
+      try {
+        this.moduleService
+          .updateMark(
+            this.createUpdateableGroup(metaObj, groupObj, 'add'),
+            metaObj.id
+          )
+          .subscribe((e) =>
+            this.toastr.success('Group has been added successfully!')
+          );
+      } catch (e: any) {
+        this.toastr.error(
+          'Error has been detected during group adding process'
         );
-    } catch (e: any) {
-      this.toastr.error('Error has been occurred during update process');
-    }
+        throw new Error(e);
+      }
+    });
+  }
+
+  deleteGroup(groupObj: any) {
+    this.getSpecificMeta(groupObj).then((metaObj) => {
+      try {
+        this.moduleService
+          .updateMark(
+            this.createUpdateableGroup(metaObj, groupObj, 'remove'),
+            metaObj.id
+          )
+          .subscribe((e) =>
+            this.toastr.success('Group has been removed successfully!')
+          );
+      } catch (e: any) {
+        this.toastr.error(
+          'Error has been detected during group removing process'
+        );
+        throw new Error(e);
+      }
+    });
+  }
+
+  changeGroup(groupObj: any) {
+    this.getSpecificMeta(groupObj).then((metaObj) => {
+      try {
+        this.moduleService
+          .updateMark(
+            this.createUpdateableGroup(metaObj, groupObj, 'update'),
+            metaObj.id
+          )
+          .subscribe((e) =>
+            this.toastr.success('Group has been updated successfully!')
+          );
+      } catch (e: any) {
+        this.toastr.error(
+          'Error has been detected during group updating process'
+        );
+        throw new Error(e);
+      }
+    });
   }
 }

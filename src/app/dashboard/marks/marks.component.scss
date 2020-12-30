@@ -16,6 +16,10 @@ ul {
   margin: 5px 10px;
 }
 
+.row {
+  margin: 0;
+}
+
 .card-body {
   padding-right: 75px;
 }
@@ -63,4 +67,19 @@ ul {
 .nicht_bestanden {
   border: 1px solid rgb(162 91 91 / 40%);
   box-shadow: 0 0 5px rgb(216 44 44 / 54%);
+}
+
+.group-active:hover .edit-area {
+  visibility: visible;
+}
+
+.edit-area {
+  height: 100%;
+  visibility: hidden;
+  margin: 3px;
+  place-items: center;
+}
+
+.edit-area button {
+  padding: 9px 5px;
 }

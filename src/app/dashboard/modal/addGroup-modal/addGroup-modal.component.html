@@ -1,0 +1,50 @@
+<div class="d-flex">
+  <button class="icon btn btn-link" (click)="open(modal_addGroup)">
+    <fa-icon [icon]="plusIcon"></fa-icon>
+  </button>
+</div>
+
+<!-- Modal modal_add -->
+<ng-template #modal_addGroup let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Gruppe hinzufügen</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form (ngSubmit)="handleSubmit(form.value)" #form="ngForm" novalidate>
+    <div class="modal-body">
+      <div class="d-flex">
+        <p class="pr-3">Course-Id: {{ activeCourse }}</p>
+        <p class="pr-3">Semester-Id: {{ activeSemester }}</p>
+        <p class="pr-3">Module-Id: {{ activeModule }}</p>
+      </div>
+      <div>
+        <label for="partner">Bezeichnung:&nbsp;</label>
+        <input id="test_art" type="text" name="test_art" [ngModel]="" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Zurück
+      </button>
+      <button
+        type="submit"
+        class="btn btn-outline-dark"
+        (click)="modal.close('Save click')"
+        [disabled]="form.invalid"
+      >
+        Ändern
+      </button>
+    </div>
+  </form>
+</ng-template>

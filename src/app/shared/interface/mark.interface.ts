@@ -1,5 +1,5 @@
 export interface Meta {
-  id: number;
+  id?: number;
   semester_id: number;
   course_id: number;
   module_id: number;

@@ -1,5 +1,5 @@
 export interface Semester {
-  id: number;
+  id?: number;
   semester_id: number;
   course_id: number;
   module: Module[];

@@ -86,9 +86,6 @@ export class MarkModalComponent implements OnInit {
   }
 
   handleDeletionMark(mark: Mark) {
-    alert('Noch nicht vollständig integriert');
-    return;
-
     let confirmDeletion = confirm('Willst du die Note wirklich löschen?');
     if (!confirmDeletion) return;
 
@@ -125,12 +122,28 @@ export class MarkModalComponent implements OnInit {
         );
       }
 
+      const {
+        test_id,
+        titel,
+        arbeitspartner,
+        erreichte_punkte,
+        max_punkte,
+        min_punkte_bestanden,
+      } = values;
+
       const markObj = {
         course_id,
         semester_id,
         module_id,
         group_id,
-        updateableMark: new Marks(values),
+        updateableMark: new Marks(
+          test_id,
+          titel,
+          arbeitspartner,
+          erreichte_punkte,
+          max_punkte,
+          min_punkte_bestanden
+        ),
       };
 
       this.handleUpdateMark.emit(markObj);

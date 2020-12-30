@@ -7,10 +7,28 @@
           {{ activeModuleName }}
         </h3>
       </div>
-      <div *ngFor="let subject of course['test_daten']">
-        <h5 class="font-italic">{{ subject["test_art"] }}</h5>
+      <div
+        class="p-2 group-active"
+        *ngFor="let subject of course['test_daten']"
+      >
+        <div class="d-flex">
+          <h5 class="d-inline p-2 font-italic">{{ subject["test_art"] }}</h5>
+          <div class="edit-area d-flex">
+            <app-group-modal
+              [marks]="marks"
+              [subject]="subject"
+              [activeModule]="activeModule"
+              [activeCourse]="activeCourse"
+              [activeSemester]="activeSemester"
+              [groupId]="subject.group_id"
+              (handleAddMark)="handleAddMark($event)"
+              (handleDeleteGroup)="handleDeleteGroup($event)"
+              (handleUpdateGroup)="handleUpdateGroup($event)"
+            ></app-group-modal>
+          </div>
+        </div>
         <div class="row">
-          <ul class="d-flex">
+          <ul class="d-flex flex-wrap">
             <li class="d-flex p-0" *ngFor="let tests of subject['tests']">
               <div
                 [ngClass]="{
@@ -67,6 +85,20 @@
               </div>
             </li>
           </ul>
+        </div>
+      </div>
+    </li>
+    <li class="p-2 group-active">
+      <div class="d-flex">
+        <h5 class="d-inline p-2 font-italic">Gruppe hinzufügen</h5>
+        <div class="edit-area d-flex">
+          <app-addgroup-modal
+            [marks]="marks"
+            [activeModule]="activeModule"
+            [activeCourse]="activeCourse"
+            [activeSemester]="activeSemester"
+            (handleAddGroup)="handleAddGroup($event)"
+          ></app-addgroup-modal>
         </div>
       </div>
     </li>

@@ -1,15 +1,16 @@
-import { Test, Mark } from '../interface/mark.interface';
+import { Meta, Test, Mark } from '../interface/mark.interface';
 
-export class Metas {
+export class Metas implements Meta {
   constructor(
-    public mark_id: number,
     public course_id: number,
+    public semester_id: number,
     public module_id: number,
-    public test_daten: Test[]
+    public test_daten: Test[],
+    public id?: number
   ) {}
 }
 
-export class Tests {
+export class Tests implements Test {
   constructor(
     public group_id: number,
     public test_art: string,
@@ -17,20 +18,13 @@ export class Tests {
   ) {}
 }
 
-export class Marks {
-  public test_id: number;
-  public titel: string;
-  public arbeitspartner: string[];
-  public erreichte_punkte: string;
-  public max_punkte: string;
-  public min_punkte_bestanden: string;
-
-  constructor(obj: Mark) {
-    this.test_id = obj.test_id;
-    this.titel = obj.titel;
-    this.arbeitspartner = obj.arbeitspartner;
-    this.erreichte_punkte = obj.erreichte_punkte;
-    this.max_punkte = obj.max_punkte;
-    this.min_punkte_bestanden = obj.min_punkte_bestanden;
-  }
+export class Marks implements Mark {
+  constructor(
+    public test_id: number,
+    public titel: string,
+    public arbeitspartner: string[],
+    public erreichte_punkte: string,
+    public max_punkte: string,
+    public min_punkte_bestanden: string
+  ) {}
 }
