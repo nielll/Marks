@@ -17,6 +17,11 @@
   font-weight: 300;
 }
 
+html {
+  min-height: 100%;
+  position: relative;
+}
+
 h2 {
   font-family: "Montserrat-SemiBold";
 }

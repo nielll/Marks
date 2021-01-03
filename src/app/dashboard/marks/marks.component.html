@@ -1,4 +1,4 @@
-<div>
+<div class="marks-wrapper">
   <h2>Noten</h2>
   <ul>
     <li *ngFor="let course of getActiveMark(); let i = index">
@@ -21,9 +21,9 @@
               [activeCourse]="activeCourse"
               [activeSemester]="activeSemester"
               [groupId]="subject.group_id"
-              (handleAddMark)="handleAddMark($event)"
-              (handleDeleteGroup)="handleDeleteGroup($event)"
-              (handleUpdateGroup)="handleUpdateGroup($event)"
+              (addMark)="handleAddMark($event)"
+              (removeGroup)="handleRemoveGroup($event)"
+              (changeGroup)="handleChangeGroup($event)"
             ></app-group-modal>
           </div>
         </div>
@@ -41,14 +41,15 @@
               >
                 <div class="card-body">
                   <app-mark-modal
+                    class="mark-active"
                     [course_id]="course.course_id"
                     [module_id]="course.module_id"
                     [semester_id]="course.semester_id"
                     [group_id]="subject.group_id"
                     [tests]="tests"
                     (getMetaById)="handleGetMetaById($event)"
-                    (handleDeleteMark)="handleDeleteMark($event)"
-                    (handleUpdateMark)="handleUpdateMark($event)"
+                    (handleRemoveMark)="handleRemoveMark($event)"
+                    (handleChangeMark)="handleChangeMark($event)"
                   ></app-mark-modal>
                   <h5 class="card-title">{{ tests.titel }}</h5>
                   <p class="card-text">

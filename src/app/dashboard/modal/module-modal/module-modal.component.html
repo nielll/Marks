@@ -1,1 +1,97 @@
-<p>module-modal works!</p>
+<div class="topcontainter">
+  <button class="icon btn btn-link" (click)="open(changeModule)">
+    <fa-icon [icon]="pencilIcon"></fa-icon>
+  </button>
+  <button class="icon btn btn-link" (click)="handleRemoveModule()">
+    <fa-icon [icon]="eraseIcon"></fa-icon>
+  </button>
+</div>
+
+<!-- Modal -->
+<ng-template #changeModule let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"></h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form (ngSubmit)="handleChangeModule()" #form="ngForm" novalidate>
+    <div class="modal-body">
+      <div class="d-flex">
+        <p class="pr-3">Course-Id:</p>
+        <p class="pr-3">Module-Id:</p>
+        <p class="d-flex">
+          Mark-Id:
+          <input
+            id="test_id"
+            type="text"
+            class="noInput"
+            name="test_id"
+            [ngModel]=""
+            hidden
+          />
+        </p>
+      </div>
+      <div>
+        <label for="partner">Titel:&nbsp;</label>
+        <input id="titel" type="text" name="titel" [ngModel]="" required />
+      </div>
+      <div>
+        <label for="partner">Partner:&nbsp;</label>
+        <input id="partner" type="text" name="arbeitspartner" [ngModel]="" />
+      </div>
+      <div>
+        <label for="partner">Erreichte Punkte:&nbsp;</label>
+        <input
+          id="e_punkte"
+          type="text"
+          name="erreichte_punkte"
+          [ngModel]=""
+          required
+        />
+      </div>
+      <div>
+        <label for="partner">Maximale Punkte:&nbsp;</label>
+        <input
+          id="max_punkte"
+          type="text"
+          name="max_punkte"
+          [ngModel]=""
+          required
+        />
+      </div>
+      <div>
+        <label for="partner">Min. zu erreichende Punkte:&nbsp;</label>
+        <input
+          id="min_punkte"
+          type="text"
+          name="min_punkte_bestanden"
+          [ngModel]=""
+          required
+        />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Zurück
+      </button>
+      <button
+        type="submit"
+        class="btn btn-outline-dark"
+        (click)="modal.close('Save click')"
+        [disabled]="form.invalid"
+      >
+        Ändern
+      </button>
+    </div>
+  </form>
+</ng-template>

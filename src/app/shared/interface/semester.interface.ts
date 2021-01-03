@@ -2,6 +2,7 @@ export interface Semester {
   id?: number;
   semester_id: number;
   course_id: number;
+  name: string;
   module: Module[];
 }
 

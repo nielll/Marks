@@ -45,10 +45,10 @@ export class MarkModalComponent implements OnInit {
   group_id: number;
 
   @Output()
-  handleUpdateMark: EventEmitter<any> = new EventEmitter<Mark>();
+  handleChangeMark: EventEmitter<any> = new EventEmitter<Mark>();
 
   @Output()
-  handleDeleteMark: EventEmitter<any> = new EventEmitter<Mark>();
+  handleRemoveMark: EventEmitter<any> = new EventEmitter<Mark>();
 
   @Output()
   handleMetaById: EventEmitter<Meta> = new EventEmitter<Meta>();
@@ -97,7 +97,7 @@ export class MarkModalComponent implements OnInit {
       updateableMark: mark,
     };
 
-    this.handleDeleteMark.emit(markObj);
+    this.handleRemoveMark.emit(markObj);
   }
 
   handleSubmitUpdateMark(
@@ -146,7 +146,7 @@ export class MarkModalComponent implements OnInit {
         ),
       };
 
-      this.handleUpdateMark.emit(markObj);
+      this.handleChangeMark.emit(markObj);
     }
   }
 }

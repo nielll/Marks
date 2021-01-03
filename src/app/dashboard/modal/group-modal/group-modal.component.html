@@ -5,7 +5,7 @@
   <button class="icon btn btn-link" (click)="open(modal_edit)">
     <fa-icon [icon]="pencilIcon"></fa-icon>
   </button>
-  <button class="icon btn btn-link" (click)="handleDeletionGroup(groupId)">
+  <button class="icon btn btn-link" (click)="handleRemoveGroup(groupId)">
     <fa-icon [icon]="eraseIcon"></fa-icon>
   </button>
 </div>
@@ -25,7 +25,7 @@
   </div>
   <form
     (ngSubmit)="
-      handleAddingMark(
+      handleAddMark(
         form.value,
         form.valid,
         activeCourse,

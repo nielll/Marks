@@ -2,6 +2,7 @@ header {
   position: relative;
   height: 500px;
   width: 100%;
+  top: 0;
 }
 
 .title-wrapper {
@@ -9,13 +10,13 @@ header {
   bottom: 85px;
   max-width: 1600px;
   width: 100%;
-  height: calc(100% + 50px);
+  height: calc(100% + 100px);
   margin: 0 auto;
 }
 
 h1 {
   position: absolute;
-  bottom: 00px;
+  bottom: 50px;
   font-family: "Montserrat-Light", sans-serif;
   color: white;
   font-size: 55px;
@@ -24,7 +25,7 @@ h1 {
 
 h5 {
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   right: 10px;
   color: black;
   font-size: 12px;

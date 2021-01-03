@@ -45,16 +45,16 @@ export class MarksComponent implements OnChanges {
   addMark: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
-  updateMark: EventEmitter<any> = new EventEmitter<any>();
+  changeMark: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
-  deleteMark: EventEmitter<any> = new EventEmitter<any>();
+  removeMark: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
   addGroup: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
-  deleteGroup: EventEmitter<any> = new EventEmitter<any>();
+  removeGroup: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
   changeGroup: EventEmitter<any> = new EventEmitter<any>();
@@ -62,12 +62,7 @@ export class MarksComponent implements OnChanges {
   @Output()
   setMetaById: EventEmitter<Meta> = new EventEmitter<Meta>();
 
-  ngOnChanges(changes) {
-    if (changes.marks) {
-      if (this.marks != changes.marks.currentValue)
-        console.log(changes.marks.currentValue);
-    }
-  }
+  ngOnChanges(changes) {}
 
   getActiveMark(): Meta[] {
     if (this.marks) {
@@ -86,27 +81,26 @@ export class MarksComponent implements OnChanges {
     this.setMetaById.emit(meta);
   }
 
-  handleDeleteMark(markObj: any) {
-    this.deleteMark.emit(markObj);
-  }
-
   handleAddMark(markObj: any) {
     this.addMark.emit(markObj);
   }
 
-  handleUpdateMark(markObj: any) {
-    this.updateMark.emit(markObj);
+  handleChangeMark(markObj: any) {
+    this.changeMark.emit(markObj);
   }
 
+  handleRemoveMark(markObj: any) {
+    this.removeMark.emit(markObj);
+  }
   handleAddGroup(groupObj: any) {
     this.addGroup.emit(groupObj);
   }
 
-  handleDeleteGroup(groupObj: any) {
-    this.deleteGroup.emit(groupObj);
+  handleChangeGroup(groupObj: any) {
+    this.changeGroup.emit(groupObj);
   }
 
-  handleUpdateGroup(groupObj: any) {
-    this.changeGroup.emit(groupObj);
+  handleRemoveGroup(groupObj: any) {
+    this.removeGroup.emit(groupObj);
   }
 }

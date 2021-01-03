@@ -1,0 +1,121 @@
+<div class="topcontainter">
+  <button class="icon btn btn-link" (click)="open(addModule)">
+    <fa-icon [icon]="plusIcon"></fa-icon>
+  </button>
+  <button class="icon btn btn-link" (click)="open(changeSemester)">
+    <fa-icon [icon]="pencilIcon"></fa-icon>
+  </button>
+  <button class="icon btn btn-link" (click)="handleRemoveSemester()">
+    <fa-icon [icon]="eraseIcon"></fa-icon>
+  </button>
+</div>
+
+<!-- Modal -->
+<ng-template #addModule let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Modul hinzufügen</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form (ngSubmit)="handleAddModule(form.value)" #form="ngForm" novalidate>
+    <div class="modal-body">
+      <div class="d-flex">
+        <p class="pr-3">Course-Id: {{ courseId }}</p>
+        <p class="pr-3">Semester-Id: {{ semesterId }}</p>
+      </div>
+      <div>
+        <label for="partner">Titel:&nbsp;</label>
+        <input
+          id="titelModule"
+          type="text"
+          name="titelModule"
+          [ngModel]=""
+          required
+        />
+      </div>
+      <div>
+        <label for="partner">Beschreibung:&nbsp;</label>
+        <input
+          id="beschreibungModule"
+          type="text"
+          name="beschreibungModule"
+          [ngModel]=""
+          required
+        />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Zurück
+      </button>
+      <button
+        type="submit"
+        class="btn btn-outline-dark"
+        (click)="modal.close('Save click')"
+        [disabled]="form.invalid"
+      >
+        Ändern
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<!-- Modal -->
+<ng-template #changeSemester let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"></h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form (ngSubmit)="handleChangeSemester(form.value)" #form="ngForm" novalidate>
+    <div class="modal-body">
+      <div class="d-flex">
+        <p class="pr-3">Course-Id: {{ courseId }}</p>
+        <p class="pr-3">Semester-Id: {{ semesterId }}</p>
+      </div>
+      <div>
+        <label for="partner">Bezeichnung:&nbsp;</label>
+        <input
+          id="bezeichnung"
+          type="text"
+          name="bezeichnung"
+          [ngModel]="semester.name"
+          required
+        />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Zurück
+      </button>
+      <button
+        type="submit"
+        class="btn btn-outline-dark"
+        (click)="modal.close('Save click')"
+        [disabled]="form.invalid"
+      >
+        Ändern
+      </button>
+    </div>
+  </form>
+</ng-template>

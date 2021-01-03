@@ -1,4 +1,5 @@
-<div class="mb-4 mt-4">
+<div class="position-relative mb-4 mt-4">
+  <div id="overview"></div>
   <h2>Kurse und Module</h2>
   <div class="mb-4">
     <label for="kurs">Kurse: </label>
@@ -13,27 +14,44 @@
     </select>
   </div>
   <ul class="module-wrap">
-    <li *ngFor="let module of getActiveModules(); let i = index">
-      <div *ngIf="module.course_id == activeCourse" class="pt-4 pb-5">
+    <li
+      class="course-wrap"
+      *ngFor="let semester of getActiveSemester(); let i = index"
+    >
+      <div *ngIf="semester.course_id == activeCourse" class="pb-5">
         <div class="position-relative text-center">
-          <h3 class="title_lines">Semester {{ i + 1 }}</h3>
+          <div class="semester-control">
+            <div class="semester-control-inner">
+              <app-semester-modal
+                [activeCourse]="activeCourse"
+                [activeSemester]="activeSemester"
+                [courseId]="semester.course_id"
+                [semesterId]="semester.semester_id"
+                [semesters]="semesters"
+                [marks]="marks"
+                [semester]="semester"
+                (changeSemesterName)="changeSemesterName($event)"
+                (removeSemester)="handleRemoveSemester($event)"
+                (changeSemester)="handleChangeSemester($event)"
+                (addModule)="handleAddModule($event)"
+              ></app-semester-modal>
+            </div>
+          </div>
+          <h3 class="title_lines">{{ semester.name }} {{ i + 1 }}</h3>
         </div>
         <div class="row mt-4 mb-4">
-          <ul
-            class="d-flex flex-wrap col-md-12 p-0 p-0"
-            *ngIf="module['module'].length > 1"
-          >
+          <ul class="d-flex flex-wrap col-md-12 p-0 p-0">
             <li
               id="mod{{ i }}"
               class="subject"
-              *ngFor="let subject of module['module']; let j = index"
+              *ngFor="let subject of semester['module']; let j = index"
             >
               <div
                 [ngClass]="{
                   selected:
                     activeModule == subject.module_id &&
-                    activeCourse == module.course_id &&
-                    activeSemester == module.semester_id
+                    activeCourse == semester.course_id &&
+                    activeSemester == semester.semester_id
                       ? 'selected'
                       : ''
                 }"
@@ -41,7 +59,7 @@
                 id="mod{{ i }}el{{ j }}"
                 #subject
                 (click)="
-                  handleModuleOnClick(subject.module_id, module.semester_id)
+                  handleModuleOnClick(subject.module_id, semester.semester_id)
                 "
               >
                 <div class="card-body">
@@ -49,20 +67,27 @@
                   <p class="card-text">
                     {{ subject.beschreibung }}
                   </p>
+                  <app-module-modal class="module-control"></app-module-modal>
                 </div>
               </div>
             </li>
           </ul>
-          <div *ngIf="module['module'].length == 1">
-            <div class="card selected">
-              <div class="card-body">
-                <h5 class="card-title">{{ module["module"][0].name }}</h5>
-                <p class="card-text">
-                  {{ module["module"][0].beschreibung }}
-                </p>
-              </div>
-            </div>
-          </div>
+        </div>
+      </div>
+    </li>
+    <li class="p-2 semester-active">
+      <div class="d-flex">
+        <h5 class="d-inline p-2 font-italic">
+          {{ semesterName ? semesterName : "Semester" }}
+          hinzufügen
+        </h5>
+        <div class="edit-area d-flex">
+          <app-addsemester-modal
+            [semesters]="semesters"
+            [activeCourse]="activeCourse"
+            [name]="semesterName"
+            (addSemester)="handleAddSemester($event)"
+          ></app-addsemester-modal>
         </div>
       </div>
     </li>

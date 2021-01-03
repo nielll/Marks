@@ -15,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 export class DashboardComponent implements OnInit {
   title = 'Marks';
   course: Course[];
-  semester: Semester[];
+  semesters: Semester[];
   filteredSemesters: Semester[];
   marks: Meta[];
   filteredMarks: Meta[];
@@ -40,13 +40,16 @@ export class DashboardComponent implements OnInit {
     });
 
     this.moduleService.getSemester().subscribe((data: Semester[]) => {
-      this.semester = data;
+      this.semesters = data;
 
       // set for first render
       this.activeSemester = this.getFirstSemesterByCourseId();
 
       // set for first render
-      this.activeModule = this.getFirstModuleByCourseId();
+      this.activeModule =
+        this.getFirstModuleByCourseId() != null
+          ? this.getFirstModuleByCourseId()
+          : null;
 
       // set moduleName for first render
       this.activeModuleName = this.getActiveModuleName();
@@ -61,9 +64,17 @@ export class DashboardComponent implements OnInit {
   }
 
   getActiveModuleName() {
-    return this.getModulesFromActiveSemester().module.find(
-      (module) => module.module_id == this.activeModule
-    ).name;
+    return this.getModulesFromActiveSemester()
+      ? this.getModulesFromActiveSemester().module
+        ? this.getModulesFromActiveSemester().module.find(
+            (module) => module.module_id == this.activeModule
+          )
+          ? this.getModulesFromActiveSemester().module.find(
+              (module) => module.module_id == this.activeModule
+            ).name
+          : null
+        : null
+      : null;
   }
 
   getActiveCourseName() {
@@ -72,7 +83,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getModulesFromActiveSemester() {
-    return this.semester.find(
+    return this.semesters.find(
       (semester) =>
         semester.course_id == this.activeCourse &&
         semester.semester_id == this.activeSemester
@@ -80,7 +91,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllSemesterPerCourse(): Semester[] {
-    return this.semester
+    return this.semesters
       .map((semester) => semester.course_id == this.activeCourse && semester)
       .filter((semester) => semester);
   }
@@ -92,29 +103,55 @@ export class DashboardComponent implements OnInit {
   }
 
   getFirstSemesterByCourseId(): number {
-    return this.semester.find(
+    return this.semesters.find(
       (subject) => subject.course_id == this.activeCourse
-    ).semester_id;
+    )
+      ? this.semesters.find((subject) => subject.course_id == this.activeCourse)
+          .semester_id
+      : null;
   }
 
   getFirstSemester(): number {
-    return this.filteredSemesters[0].semester_id;
+    return this.filteredSemesters
+      ? this.filteredSemesters[0]
+        ? this.filteredSemesters[0].semester_id
+        : null
+      : null;
   }
 
   getFirstCourse(data: Course[]): number {
     return (this.activeCourse = data[0].course_id);
   }
 
-  getFirstModuleByCourseId(): number {
-    return this.semester.find(
+  getFirstModuleByCourseId(): any {
+    return this.semesters.find(
       (subject) => subject.course_id == this.activeCourse
-    ).module[0].module_id;
+    )
+      ? this.semesters.find((subject) => subject.course_id == this.activeCourse)
+          .module
+        ? this.semesters.find(
+            (subject) => subject.course_id == this.activeCourse
+          ).module[0]
+          ? this.semesters.find(
+              (subject) => subject.course_id == this.activeCourse
+            ).module[0].module_id
+          : null
+        : null
+      : null;
   }
 
   getFirstModule(): number {
     return this.filteredSemesters.find(
       (subject) => subject.course_id == this.activeCourse
-    ).module[0].module_id;
+    )
+      ? this.filteredSemesters.find(
+          (subject) => subject.course_id == this.activeCourse
+        ).module[0]
+        ? this.filteredSemesters.find(
+            (subject) => subject.course_id == this.activeCourse
+          ).module[0].module_id
+        : null
+      : null;
   }
 
   async getSpecificMeta(markObj: any): Promise<Meta> {
@@ -157,9 +194,18 @@ export class DashboardComponent implements OnInit {
       );
   }
 
+  getSemesterIndex(semesterObj: Semester): number {
+    console.log(semesterObj);
+    return this.semesters.findIndex(
+      (semester) =>
+        semester.course_id == semesterObj.course_id &&
+        semester.semester_id == semesterObj.semester_id
+    );
+  }
+
   createNewSemesterId(): number {
-    return this.semester.length > 0
-      ? this.semester.reduce((prev, curr) => (prev.id < curr.id ? curr : prev))
+    return this.semesters.length > 0
+      ? this.semesters.reduce((prev, curr) => (prev.id < curr.id ? curr : prev))
           .id + 1
       : 1;
   }
@@ -305,7 +351,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  deleteMark(markObj: any) {
+  removeMark(markObj: any) {
     this.getSpecificMeta(markObj).then((metaObj) => {
       try {
         this.moduleService
@@ -323,7 +369,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  updateMark(markObj: any) {
+  changeMark(markObj: any) {
     this.getSpecificMeta(markObj).then((metaObj) => {
       try {
         this.moduleService
@@ -342,26 +388,30 @@ export class DashboardComponent implements OnInit {
   }
 
   addGroup(groupObj: any) {
-    this.getSpecificMeta(groupObj).then((metaObj) => {
-      try {
-        this.moduleService
-          .updateMark(
-            this.createUpdateableGroup(metaObj, groupObj, 'add'),
-            metaObj.id
-          )
-          .subscribe((e) =>
-            this.toastr.success('Group has been added successfully!')
+    if (this.activeModule) {
+      this.getSpecificMeta(groupObj).then((metaObj) => {
+        try {
+          this.moduleService
+            .updateMark(
+              this.createUpdateableGroup(metaObj, groupObj, 'add'),
+              metaObj.id
+            )
+            .subscribe((e) =>
+              this.toastr.success('Group has been added successfully!')
+            );
+        } catch (e: any) {
+          this.toastr.error(
+            'Error has been detected during group adding process'
           );
-      } catch (e: any) {
-        this.toastr.error(
-          'Error has been detected during group adding process'
-        );
-        throw new Error(e);
-      }
-    });
+          throw new Error(e);
+        }
+      });
+    } else {
+      this.toastr.error('Create or select Module infront');
+    }
   }
 
-  deleteGroup(groupObj: any) {
+  removeGroup(groupObj: any) {
     this.getSpecificMeta(groupObj).then((metaObj) => {
       try {
         this.moduleService
@@ -399,5 +449,119 @@ export class DashboardComponent implements OnInit {
         throw new Error(e);
       }
     });
+  }
+
+  addSemester(semesterObj: Semester) {
+    try {
+      this.moduleService
+        .addSemester(semesterObj)
+        .subscribe((e) =>
+          this.toastr.success('Semester has been added successfully!')
+        );
+    } catch (e: any) {
+      this.toastr.error(
+        'Error has been detected during semester adding process'
+      );
+      throw new Error(e);
+    }
+  }
+
+  changeSemester(semesterObj: Semester) {
+    console.log(semesterObj);
+    try {
+      this.moduleService
+        .updateSemester(semesterObj, semesterObj.id)
+        .subscribe((e) =>
+          this.toastr.success('Semester has been updated successfully!')
+        );
+    } catch (e: any) {
+      this.toastr.error(
+        'Error has been detected during semester creating process'
+      );
+      throw new Error(e);
+    }
+  }
+
+  removeSemester(semesterObj: any) {
+    console.log(semesterObj);
+
+    // Set active to null if same id as the deleted semester
+    if (
+      semesterObj.updateableSemester.course_id == this.activeCourse &&
+      semesterObj.updateableSemester.semester_id == this.activeSemester
+    ) {
+      this.activeSemester = null;
+      this.activeModule = null;
+    }
+
+    // Implement: Update marks according when delete semester
+    const updateableMark = this.marks.filter(
+      (marks) =>
+        marks.course_id == semesterObj.updateableSemester.course_id &&
+        marks.semester_id == semesterObj.updateableSemester.semester_id
+    );
+
+    // Update local data
+    this.marks = semesterObj.updateableMeta;
+    this.semesters.splice(semesterObj.index, 1);
+
+    try {
+      // Update api data, remove all marks related to modules in semester which is going to be deleted
+      let promises = [];
+
+      promises.push(
+        new Promise((resolve, reject) => {
+          this.moduleService
+            .removeSemester(semesterObj.updateableSemester.id)
+            .subscribe(
+              (e) => resolve(e)
+              //this.toastr.success('Semester has been removed successfully!')
+            );
+        })
+      );
+
+      for (let i = 0; i < updateableMark.length; i++) {
+        promises.push(
+          new Promise((resolve, reject) => {
+            this.moduleService.removeMark(updateableMark[i].id).subscribe(
+              (e) => resolve(e)
+              //this.toastr.success('Semester has been removed successfully!')
+            );
+          })
+        );
+      }
+
+      Promise.all(promises).then((values) => {
+        console.log(values, updateableMark);
+        this.toastr.success('Semester has been removed successfully!');
+      });
+    } catch (e: any) {
+      this.toastr.error(
+        'Error has been detected during semester removing process'
+      );
+      throw new Error(e);
+    }
+  }
+
+  addModule(semesterObj: any) {
+    console.log(semesterObj);
+    try {
+      this.moduleService
+        .updateSemester(semesterObj, semesterObj.id)
+        .subscribe((e) =>
+          this.toastr.success('Module has been added successfully!')
+        );
+    } catch (e: any) {
+      this.toastr.error('Error has been detected during module adding process');
+      throw new Error(e);
+    }
+  }
+
+  changeModule(moduleObj: any) {
+    console.log(moduleObj);
+  }
+
+  removeModule(moduleObj: any) {
+    console.log(moduleObj);
   }
 }

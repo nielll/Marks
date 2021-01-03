@@ -1,3 +1,8 @@
+#overview {
+  position: absolute;
+  top: -68px;
+}
+
 .subject {
   min-width: 250px;
   margin: 5px 10px;
@@ -20,9 +25,17 @@
   box-shadow: 0 0 10px #80bdff;
 }
 
+.card-body {
+  position: relative;
+}
+
 .module-wrap {
   margin: 0;
   padding: 0;
+}
+
+.course-wrap:hover .semester-control {
+  visibility: visible;
 }
 
 .row {
@@ -59,4 +72,43 @@ ul {
 .title_lines:before {
   margin-left: -50%;
   text-align: right;
+}
+
+.semester-control {
+  visibility: hidden;
+  position: relative;
+  width: 100%;
+  height: 35px;
+}
+
+.semester-control-inner {
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50%;
+}
+
+.semester-active:hover .edit-area {
+  visibility: visible;
+}
+
+.edit-area {
+  height: 100%;
+  visibility: hidden;
+  margin: 3px;
+  place-items: center;
+}
+
+.edit-area button {
+  padding: 9px 5px;
+}
+
+.module-control {
+  visibility: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+}
+
+.selected:hover .module-control {
+  visibility: visible;
 }

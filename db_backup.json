@@ -16,6 +16,7 @@
       "id": 1,
       "semester_id": 1,
       "course_id": 1,
+      "name": "Semester",
       "module": [
         {
           "module_id": 1,
@@ -48,6 +49,7 @@
       "id": 2,
       "semester_id": 2,
       "course_id": 2,
+      "name": "Semester",
       "module": [
         {
           "module_id": 1,
@@ -60,6 +62,7 @@
       "id": 3,
       "semester_id": 3,
       "course_id": 1,
+      "name": "Semester",
       "module": [
         {
           "module_id": 1,
@@ -212,6 +215,55 @@
           ]
         }
       ]
+    },
+    {
+      "course_id": 1,
+      "semester_id": 1,
+      "module_id": 2,
+      "test_daten": [],
+      "id": 4
+    },
+    {
+      "course_id": 1,
+      "semester_id": 3,
+      "module_id": 2,
+      "test_daten": [],
+      "id": 5
+    },
+    {
+      "course_id": 1,
+      "semester_id": 3,
+      "module_id": 3,
+      "test_daten": [],
+      "id": 6
+    },
+    {
+      "course_id": 1,
+      "semester_id": 3,
+      "module_id": 1,
+      "test_daten": [],
+      "id": 7
+    },
+    {
+      "course_id": 1,
+      "semester_id": 1,
+      "module_id": 3,
+      "test_daten": [],
+      "id": 8
+    },
+    {
+      "course_id": 1,
+      "semester_id": 1,
+      "module_id": 4,
+      "test_daten": [],
+      "id": 9
+    },
+    {
+      "course_id": 1,
+      "semester_id": 1,
+      "module_id": 5,
+      "test_daten": [],
+      "id": 10
     }
   ]
 }

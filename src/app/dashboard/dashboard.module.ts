@@ -13,6 +13,9 @@ import { OverviewComponent } from './overview/overview.component';
 import { MarkModalComponent } from './modal/mark-modal/mark-modal.component';
 import { GroupModalComponent } from './modal/group-modal/group-modal.component';
 import { AddGroupModalComponent } from './modal/addGroup-modal/addGroup-modal.component';
+import { SemesterModalComponent } from './modal/semester-modal/semester-modal.component';
+import { AddSemesterModalComponent } from './modal/addSemester-modal/addSemester-modal.component';
+import { ModuleModalComponent } from './modal/module-modal/module-modal.component';
 
 // module
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -30,6 +33,9 @@ import { DashboardService } from '../shared/services/dashboard.service';
     MarkModalComponent,
     GroupModalComponent,
     AddGroupModalComponent,
+    SemesterModalComponent,
+    AddSemesterModalComponent,
+    ModuleModalComponent,
   ],
   imports: [
     CommonModule,

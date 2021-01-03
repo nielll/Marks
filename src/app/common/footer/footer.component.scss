@@ -1,3 +1,9 @@
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
 .nav-wrapper {
   background-color: #ededf3;
 }
@@ -22,6 +28,6 @@ a:hover {
   color: rgb(146, 146, 146);
 }
 
-ul:first-child li a {
+ul:first-child li p {
   padding-left: 0;
 }

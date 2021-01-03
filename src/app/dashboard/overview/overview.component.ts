@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { Course } from '../../shared/interface/course.interface';
 import { Semester, Module } from '../../shared/interface/semester.interface';
+import { Meta } from '../../shared/interface/mark.interface';
 
 @Component({
   selector: 'app-overview',
@@ -17,11 +18,16 @@ import { Semester, Module } from '../../shared/interface/semester.interface';
 export class OverviewComponent implements OnInit, OnChanges {
   constructor() {}
 
+  semesterName: string;
+
   @Input()
   courses: Course[];
 
   @Input()
-  semester: Semester[];
+  marks: Meta[];
+
+  @Input()
+  semesters: Semester[];
 
   @Input()
   title: string;
@@ -44,9 +50,32 @@ export class OverviewComponent implements OnInit, OnChanges {
   @Output()
   changeModule: EventEmitter<number> = new EventEmitter<number>();
 
+  @Output()
+  addSemester: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  changingSemester: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  removeSemester: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  addModule: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  changingModule: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  removeModule: EventEmitter<any> = new EventEmitter<any>();
+
   ngOnInit(): void {}
 
-  ngOnChanges(changes) {}
+  ngOnChanges(changes) {
+    console.log('Semestername', changes);
+    if (changes.semesters && changes.semesters.currentValue) {
+      this.semesterName = changes.semesters.currentValue.name;
+    }
+  }
 
   handleModuleOnClick(subject: number, semester: number) {
     // console.log('subject' + subject, 'semester' + semester);
@@ -60,11 +89,40 @@ export class OverviewComponent implements OnInit, OnChanges {
     this.changeCourse.emit(course_id);
   }
 
-  getActiveModules(): Semester[] {
-    if (this.semester) {
-      return this.semester
-        .map((module) => module.course_id == this.activeCourse && module)
-        .filter((noFalse) => Boolean(noFalse) !== false);
+  getActiveSemester(): Semester[] {
+    if (this.semesters) {
+      return this.semesters.filter(
+        (semester) => semester.course_id == this.activeCourse
+      );
     }
+  }
+
+  changeSemesterName(semesterName: string) {
+    console.log(semesterName);
+    this.semesterName = semesterName;
+  }
+
+  handleAddSemester(semesterObj: any) {
+    this.addSemester.emit(semesterObj);
+  }
+
+  handleChangeSemester(semesterObj: any) {
+    this.changingSemester.emit(semesterObj);
+  }
+
+  handleRemoveSemester(semesterObj: any) {
+    this.removeSemester.emit(semesterObj);
+  }
+
+  handleAddModule(moduleObj: any) {
+    this.addModule.emit(moduleObj);
+  }
+
+  handleChangeModule(moduleObj: any) {
+    this.changingModule.emit(moduleObj);
+  }
+
+  handleRemoveModule(moduleObj: any) {
+    this.removeModule.emit(moduleObj);
   }
 }

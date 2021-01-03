@@ -2,7 +2,8 @@
   <app-overview
     class="d-block"
     [courses]="course"
-    [semester]="semester"
+    [semesters]="semesters"
+    [marks]="marks"
     [title]="title"
     [activeSemester]="activeSemester"
     [activeCourse]="activeCourse"
@@ -10,6 +11,12 @@
     (changeSemester)="handleActiveSemester($event)"
     (changeCourse)="handleActiveCourse($event)"
     (changeModule)="handleActiveModule($event)"
+    (addSemester)="addSemester($event)"
+    (changingSemester)="changeSemester($event)"
+    (removeSemester)="removeSemester($event)"
+    (addModule)="addModule($event)"
+    (changingModule)="changeModule($event)"
+    (removeModule)="removeModule($event)"
   ></app-overview>
   <app-marks
     class="d-block"
@@ -22,11 +29,11 @@
     [activeModuleName]="activeModuleName"
     (setMetaById)="setMetaById()"
     (addMark)="addMark($event)"
-    (deleteMark)="deleteMark($event)"
-    (updateMark)="updateMark($event)"
+    (removeMark)="removeMark($event)"
+    (changeMark)="changeMark($event)"
     (addGroup)="addGroup($event)"
-    (deleteGroup)="deleteGroup($event)"
     (changeGroup)="changeGroup($event)"
+    (removeGroup)="removeGroup($event)"
   >
   </app-marks>
 </div>

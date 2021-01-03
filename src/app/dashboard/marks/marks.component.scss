@@ -1,3 +1,7 @@
+.marks-wrapper {
+  padding-bottom: 20px;
+}
+
 p {
   margin: 0;
 }
@@ -82,4 +86,12 @@ ul {
 
 .edit-area button {
   padding: 9px 5px;
+}
+
+.card:hover .mark-active {
+  visibility: visible;
+}
+
+.mark-active {
+  visibility: hidden;
 }

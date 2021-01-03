@@ -50,13 +50,13 @@ export class GroupModalComponent implements OnInit {
   activeModule: number;
 
   @Output()
-  handleAddMark: EventEmitter<any> = new EventEmitter<any>();
+  addMark: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
-  handleDeleteGroup: EventEmitter<any> = new EventEmitter<any>();
+  removeGroup: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
-  handleUpdateGroup: EventEmitter<any> = new EventEmitter<any>();
+  changeGroup: EventEmitter<any> = new EventEmitter<any>();
 
   ngOnInit(): void {}
 
@@ -105,7 +105,7 @@ export class GroupModalComponent implements OnInit {
       : 1;
   }
 
-  handleAddingMark(
+  handleAddMark(
     values: any,
     isValid,
     course_id: number,
@@ -150,11 +150,11 @@ export class GroupModalComponent implements OnInit {
         ),
       };
 
-      this.handleAddMark.emit(markObj);
+      this.addMark.emit(markObj);
     }
   }
 
-  handleDeletionGroup(groupId: number) {
+  handleRemoveGroup(groupId: number) {
     let confirmDeletion = confirm('Willst du die Gruppierung löschen?');
     if (!confirmDeletion) return;
 
@@ -165,7 +165,7 @@ export class GroupModalComponent implements OnInit {
       group_id: groupId,
     };
 
-    this.handleDeleteGroup.emit(groupObj);
+    this.removeGroup.emit(groupObj);
   }
 
   handleSubmitGroupChange(values: any) {
@@ -192,6 +192,6 @@ export class GroupModalComponent implements OnInit {
 
     console.log(groupObj);
 
-    this.handleUpdateGroup.emit(groupObj);
+    this.changeGroup.emit(groupObj);
   }
 }

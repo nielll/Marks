@@ -81,12 +81,6 @@ export class AddGroupModalComponent implements OnInit {
   }
 
   createNewGroupId(): number {
-    console.log(
-      this.activeCourse,
-      this.activeSemester,
-      this.activeModule,
-      this.marks
-    );
     return this.getActiveMeta() && this.getActiveMeta().test_daten.length > 0
       ? this.getActiveMeta().test_daten.reduce((prev, curr) =>
           prev.group_id < curr.group_id ? curr : prev

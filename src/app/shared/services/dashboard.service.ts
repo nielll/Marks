@@ -45,7 +45,51 @@ export class DashboardService {
   }
 
   updateCourse() {}
-  updateModule() {}
+
+  addSemester(semesterObj: Semester): Observable<Semester> {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*');
+
+    return this.http.post<Semester>(`${MODULES_API}/semester`, semesterObj, {
+      headers,
+    });
+  }
+
+  updateSemester(semesterObj: Semester, index: number): Observable<Semester> {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*');
+
+    return this.http.put<Semester>(
+      `${MODULES_API}/semester/${index}`,
+      semesterObj,
+      {
+        headers,
+      }
+    );
+  }
+
+  removeSemester(index: number): Observable<Semester> {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*');
+
+    return this.http.delete<Semester>(`${MODULES_API}/semester/${index}`, {
+      headers,
+    });
+  }
+
+  removeMark(index: number) {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*');
+
+    return this.http.delete<Meta>(`${MODULES_API}/noten/${index}`, {
+      headers,
+    });
+  }
+
   updateMark(metaObj: Meta, index: number): Observable<Meta> {
     const headers = new HttpHeaders()
       .set('content-type', 'application/json')
@@ -55,13 +99,6 @@ export class DashboardService {
       headers,
     });
   }
-
-  createCourse() {}
-  createModule() {}
-  createMarks() {}
-
-  deleteCourse() {}
-  deleteModule() {}
 
   addMeta(meta: Meta): Observable<Meta> {
     const headers = new HttpHeaders()
