@@ -71,14 +71,12 @@ export class OverviewComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
 
   ngOnChanges(changes) {
-    console.log('Semestername', changes);
     if (changes.semesters && changes.semesters.currentValue) {
       this.semesterName = changes.semesters.currentValue.name;
     }
   }
 
   handleModuleOnClick(subject: number, semester: number) {
-    // console.log('subject' + subject, 'semester' + semester);
     this.changeSemester.emit(semester);
     this.changeModule.emit(subject);
   }
@@ -98,7 +96,6 @@ export class OverviewComponent implements OnInit, OnChanges {
   }
 
   changeSemesterName(semesterName: string) {
-    console.log(semesterName);
     this.semesterName = semesterName;
   }
 

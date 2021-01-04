@@ -36,7 +36,6 @@ export class AddSemesterModalComponent implements OnInit {
   ngOnInit(): void {}
 
   ngOnChanges(changes) {
-    console.log(changes);
     if (changes.name) {
       this.name = changes.name.currentValue;
     }
@@ -54,7 +53,7 @@ export class AddSemesterModalComponent implements OnInit {
       this.createNewSemesterId(),
       this.createNewSemesterId(),
       this.activeCourse,
-      this.name,
+      this.name ? this.name : 'Semester',
       []
     );
 

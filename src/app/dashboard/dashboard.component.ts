@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { DashboardService } from '../shared/services/dashboard.service';
 import { Course } from '../shared/interface/course.interface';
 import { Semester, Module } from '../shared/interface/semester.interface';
@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnChanges {
   title = 'Marks';
   course: Course[];
   semesters: Semester[];
@@ -61,6 +61,10 @@ export class DashboardComponent implements OnInit {
       // filtered arrays based on activeMarks
       this.filteredMarks = this.getAllMarksPerCourse();
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
   }
 
   getActiveModuleName() {
@@ -195,7 +199,6 @@ export class DashboardComponent implements OnInit {
   }
 
   getSemesterIndex(semesterObj: Semester): number {
-    console.log(semesterObj);
     return this.semesters.findIndex(
       (semester) =>
         semester.course_id == semesterObj.course_id &&
@@ -467,7 +470,6 @@ export class DashboardComponent implements OnInit {
   }
 
   changeSemester(semesterObj: Semester) {
-    console.log(semesterObj);
     try {
       this.moduleService
         .updateSemester(semesterObj, semesterObj.id)
@@ -483,8 +485,6 @@ export class DashboardComponent implements OnInit {
   }
 
   removeSemester(semesterObj: any) {
-    console.log(semesterObj);
-
     // Set active to null if same id as the deleted semester
     if (
       semesterObj.updateableSemester.course_id == this.activeCourse &&
@@ -532,7 +532,6 @@ export class DashboardComponent implements OnInit {
       }
 
       Promise.all(promises).then((values) => {
-        console.log(values, updateableMark);
         this.toastr.success('Semester has been removed successfully!');
       });
     } catch (e: any) {
@@ -544,24 +543,85 @@ export class DashboardComponent implements OnInit {
   }
 
   addModule(semesterObj: any) {
-    console.log(semesterObj);
     try {
-      this.moduleService
-        .updateSemester(semesterObj, semesterObj.id)
-        .subscribe((e) =>
-          this.toastr.success('Module has been added successfully!')
-        );
+      const updateSemester = new Promise((resolve, reject) =>
+        this.moduleService
+          .updateSemester(
+            semesterObj.updateableSemester,
+            semesterObj.updateableSemester.id
+          )
+          .subscribe((e) =>
+            //this.toastr.success('Module has been added successfully!')
+            resolve(e)
+          )
+      );
+
+      const updateMeta = new Promise((resolve, reject) =>
+        this.moduleService.addMeta(semesterObj.updateableMeta).subscribe((e) =>
+          //this.toastr.success('Module has been added successfully!')
+          resolve(e)
+        )
+      );
+
+      Promise.all([updateSemester, updateMeta]).then(() =>
+        this.toastr.success('Module has been added successfully!')
+      );
     } catch (e: any) {
       this.toastr.error('Error has been detected during module adding process');
       throw new Error(e);
     }
   }
 
-  changeModule(moduleObj: any) {
-    console.log(moduleObj);
+  changeModule(semesterObj: any) {
+    try {
+      this.moduleService
+        .updateSemester(
+          semesterObj.updateableSemester,
+          semesterObj.updateableSemester.id
+        )
+        .subscribe((e) =>
+          this.toastr.success('Module has been changed successfully!')
+        );
+    } catch (e: any) {
+      this.toastr.error(
+        'Error has been detected during module changing process'
+      );
+      throw new Error(e);
+    }
   }
 
-  removeModule(moduleObj: any) {
-    console.log(moduleObj);
+  removeModule(semesterObj: any) {
+    try {
+      const updateSemester = new Promise((resolve, reject) =>
+        this.moduleService
+          .updateSemester(
+            semesterObj.updateableSemester,
+            semesterObj.updateableSemester.id
+          )
+          .subscribe((e) => resolve(e))
+      );
+
+      const updateMeta = new Promise((resolve, reject) =>
+        semesterObj.indexMeta
+          ? this.moduleService
+              .removeMark(semesterObj.indexMeta)
+              .subscribe(() => resolve('Meta deleted'))
+          : resolve('Nothing to delete')
+      );
+
+      Promise.all([updateSemester, updateMeta]).then((e) => {
+        this.toastr.success('Module has been removed successfully!');
+        console.log(e);
+      });
+
+      // set active to null
+      this.activeSemester = null;
+      this.activeModule = null;
+    } catch (e: any) {
+      this.toastr.error(
+        'Error has been detected during module removing process'
+      );
+      throw new Error(e);
+    }
   }
 }

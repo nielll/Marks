@@ -190,8 +190,6 @@ export class GroupModalComponent implements OnInit {
       updateableGroup,
     };
 
-    console.log(groupObj);
-
     this.changeGroup.emit(groupObj);
   }
 }

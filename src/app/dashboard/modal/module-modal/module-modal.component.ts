@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   NgbModal,
   ModalDismissReasons,
@@ -9,6 +9,9 @@ import {
   faEraser,
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
+import { Meta } from 'src/app/shared/interface/mark.interface';
+import { Semester, Module } from 'src/app/shared/interface/semester.interface';
+import { Modules, Semesters } from '../../../shared/models/semester.model';
 
 @Component({
   selector: 'app-module-modal',
@@ -26,6 +29,27 @@ export class ModuleModalComponent implements OnInit {
       backdropClass: 'customBackdrop',
     };
   }
+
+  @Input()
+  subject: Module;
+
+  @Input()
+  semesters: Semester[];
+
+  @Input()
+  marks: Meta[];
+
+  @Input()
+  courseId: number;
+
+  @Input()
+  semesterId: number;
+
+  @Output()
+  removeModule: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  changeModule: EventEmitter<any> = new EventEmitter<any>();
 
   ngOnInit(): void {}
 
@@ -50,7 +74,79 @@ export class ModuleModalComponent implements OnInit {
     }
   }
 
-  handleRemoveModule() {}
+  getUpdateableSemester(): Semester {
+    return this.semesters.find(
+      (semester) =>
+        semester.course_id == this.courseId &&
+        semester.semester_id == this.semesterId
+    );
+  }
 
-  handleChangeModule() {}
+  getIndexModule(): number {
+    return this.getUpdateableSemester().module.findIndex(
+      (module) => module.module_id == this.subject.module_id
+    );
+  }
+
+  getIndexMark(): number {
+    return this.marks.findIndex(
+      (mark) =>
+        mark.course_id == this.courseId &&
+        mark.semester_id == this.semesterId &&
+        mark.module_id == this.subject.module_id
+    );
+  }
+
+  getMarkId(): number {
+    return (
+      this.marks.find(
+        (mark) =>
+          mark.course_id == this.courseId &&
+          mark.semester_id == this.semesterId &&
+          mark.module_id == this.subject.module_id
+      )?.id || null
+    );
+  }
+
+  handleChangeModule(values: any) {
+    const updatedModule = new Modules(
+      this.subject.module_id,
+      values.titelModule,
+      values.beschreibungModule
+    );
+
+    let updateableSemester = this.getUpdateableSemester();
+    updateableSemester.module.splice(this.getIndexModule(), 1, updatedModule);
+
+    const semesterObj = {
+      updateableSemester,
+    };
+
+    this.changeModule.emit(semesterObj);
+
+    // Update local state
+    this.getUpdateableSemester().module.splice(
+      this.getIndexModule(),
+      1,
+      updatedModule
+    );
+  }
+
+  handleRemoveModule() {
+    let confirmDeletion = confirm('Willst du das Modul wirklich löschen?');
+    if (!confirmDeletion) return;
+
+    let updateableSemester = this.getUpdateableSemester();
+    updateableSemester.module.splice(this.getIndexModule(), 1);
+
+    const semesterObj = {
+      indexMeta: this.getMarkId(),
+      updateableSemester,
+    };
+
+    this.removeModule.emit(semesterObj);
+
+    // Update local state
+    this.marks.splice(this.getIndexMark(), 1);
+  }
 }

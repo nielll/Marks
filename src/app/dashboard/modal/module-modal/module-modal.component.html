@@ -10,7 +10,7 @@
 <!-- Modal -->
 <ng-template #changeModule let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title"></h4>
+    <h4 class="modal-title" id="modal-basic-title">Modul ändern</h4>
     <button
       type="button"
       class="close"
@@ -20,59 +20,30 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <form (ngSubmit)="handleChangeModule()" #form="ngForm" novalidate>
+  <form (ngSubmit)="handleChangeModule(form.value)" #form="ngForm" novalidate>
     <div class="modal-body">
       <div class="d-flex">
-        <p class="pr-3">Course-Id:</p>
-        <p class="pr-3">Module-Id:</p>
-        <p class="d-flex">
-          Mark-Id:
-          <input
-            id="test_id"
-            type="text"
-            class="noInput"
-            name="test_id"
-            [ngModel]=""
-            hidden
-          />
-        </p>
+        <p class="pr-3">Course-Id: {{ courseId }}</p>
+        <p class="pr-3">Semester-Id: {{ semesterId }}</p>
+        <p class="pr-3">Module-Id: {{ subject.module_id }}</p>
       </div>
       <div>
-        <label for="partner">Titel:&nbsp;</label>
-        <input id="titel" type="text" name="titel" [ngModel]="" required />
-      </div>
-      <div>
-        <label for="partner">Partner:&nbsp;</label>
-        <input id="partner" type="text" name="arbeitspartner" [ngModel]="" />
-      </div>
-      <div>
-        <label for="partner">Erreichte Punkte:&nbsp;</label>
+        <label for="titelModule">Titel:&nbsp;</label>
         <input
-          id="e_punkte"
+          id="titelModule"
           type="text"
-          name="erreichte_punkte"
-          [ngModel]=""
+          name="titelModule"
+          [ngModel]="this.subject.name"
           required
         />
       </div>
       <div>
-        <label for="partner">Maximale Punkte:&nbsp;</label>
+        <label for="beschreibungModule">Beschreibung:&nbsp;</label>
         <input
-          id="max_punkte"
+          id="beschreibungModule"
           type="text"
-          name="max_punkte"
-          [ngModel]=""
-          required
-        />
-      </div>
-      <div>
-        <label for="partner">Min. zu erreichende Punkte:&nbsp;</label>
-        <input
-          id="min_punkte"
-          type="text"
-          name="min_punkte_bestanden"
-          [ngModel]=""
-          required
+          name="beschreibungModule"
+          [ngModel]="this.subject.beschreibung"
         />
       </div>
     </div>

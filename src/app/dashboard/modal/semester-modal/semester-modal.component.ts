@@ -13,6 +13,7 @@ import {
 import { Semester } from 'src/app/shared/interface/semester.interface';
 import { Meta } from '../../../shared/interface/mark.interface';
 import { Modules } from '../../../shared/models/semester.model';
+import { Metas } from 'src/app/shared/models/mark.model';
 
 @Component({
   selector: 'app-semester-modal',
@@ -53,11 +54,11 @@ export class SemesterModalComponent implements OnInit {
   @Input()
   semesterId: number;
 
-  @Output()
-  changeSemesterName: EventEmitter<string> = new EventEmitter<string>();
-
   @Input()
   semesterName: string;
+
+  @Output()
+  changeSemesterName: EventEmitter<string> = new EventEmitter<string>();
 
   @Output()
   changeSemester: EventEmitter<any> = new EventEmitter<any>();
@@ -89,6 +90,13 @@ export class SemesterModalComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  createNewMarkId(): number {
+    return this.marks.length > 0
+      ? this.marks.reduce((prev, curr) => (prev.id < curr.id ? curr : prev))
+          .id + 1
+      : 1;
   }
 
   getIndexOfSemester(semesterObj: Semester): number {
@@ -134,17 +142,29 @@ export class SemesterModalComponent implements OnInit {
   }
 
   handleAddModule(values: any) {
+    const newModuleId = this.getNewModuleId();
     let updateableSemester = this.getUpdateableSemester();
-
-    updateableSemester.module.push(
-      new Modules(
-        this.getNewModuleId(),
-        values.titelModule,
-        values.beschreibungModule
-      )
+    let updateableMeta = new Metas(
+      this.courseId,
+      this.semesterId,
+      newModuleId,
+      [],
+      this.createNewMarkId()
     );
 
-    this.addModule.emit(updateableSemester);
+    updateableSemester.module.push(
+      new Modules(newModuleId, values.titelModule, values.beschreibungModule)
+    );
+
+    const semesterObj = {
+      updateableSemester,
+      updateableMeta,
+    };
+
+    // create meta from new module and update state
+    this.marks.push(updateableMeta);
+
+    this.addModule.emit(semesterObj);
   }
 
   handleChangeSemester(values: any) {
@@ -159,7 +179,7 @@ export class SemesterModalComponent implements OnInit {
   }
 
   handleRemoveSemester() {
-    let confirmDeletion = confirm('Willst du wirklich das Semester löschen?');
+    let confirmDeletion = confirm('Willst du das Semester wirklich löschen?');
     if (!confirmDeletion) return;
 
     this.changeSemesterName.emit(null);

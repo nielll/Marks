@@ -67,7 +67,16 @@
                   <p class="card-text">
                     {{ subject.beschreibung }}
                   </p>
-                  <app-module-modal class="module-control"></app-module-modal>
+                  <app-module-modal
+                    class="module-control"
+                    [courseId]="semester.course_id"
+                    [semesterId]="semester.semester_id"
+                    [subject]="subject"
+                    [semesters]="semesters"
+                    [marks]="marks"
+                    (removeModule)="handleRemoveModule($event)"
+                    (changeModule)="handleChangeModule($event)"
+                  ></app-module-modal>
                 </div>
               </div>
             </li>
