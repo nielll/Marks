@@ -11,6 +11,259 @@
       "titel": "Passerelle"
     }
   ],
-  "semester": [],
-  "noten": []
+  "semester": [
+    {
+      "id": 1,
+      "semester_id": 1,
+      "course_id": 1,
+      "name": "Semester",
+      "module": [
+        {
+          "module_id": 1,
+          "name": "Datenbanksysteme I",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "module_id": 2,
+          "name": "Diskrete Mathematik",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "module_id": 3,
+          "name": "Analysis I",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "module_id": 4,
+          "name": "Betriebssysteme I",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "module_id": 5,
+          "name": "Objectorientierte Programmierung",
+          "beschreibung": "lorem ipsum dolores"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "semester_id": 2,
+      "course_id": 2,
+      "name": "Semester",
+      "module": [
+        {
+          "module_id": 1,
+          "name": "Mathematik",
+          "beschreibung": "lorem ipsum dolores"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "semester_id": 3,
+      "course_id": 1,
+      "name": "Semester",
+      "module": [
+        {
+          "module_id": 1,
+          "name": "Datenbanksysteme II",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "module_id": 2,
+          "name": "Algorithmen und Systeme",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "module_id": 3,
+          "name": "Analysis II",
+          "beschreibung": "lorem ipsum dolores"
+        },
+        {
+          "module_id": 4,
+          "name": "Lineare Algebra",
+          "beschreibung": "lorem ipsum dolores"
+        }
+      ]
+    }
+  ],
+  "noten": [
+    {
+      "id": 1,
+      "semester_id": 1,
+      "course_id": 1,
+      "module_id": 1,
+      "test_daten": [
+        {
+          "group_id": 1,
+          "test_art": "Testate",
+          "tests": [
+            {
+              "test_id": 1,
+              "titel": "Testat 1",
+              "arbeitspartner": ["Ramon", "Timon"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            },
+            {
+              "test_id": 2,
+              "titel": "Testat 2",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            },
+            {
+              "test_id": 3,
+              "titel": "Testat 3",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            }
+          ]
+        },
+        {
+          "group_id": 2,
+          "test_art": "Semesterprüfung",
+          "tests": [
+            {
+              "test_id": 1,
+              "titel": "Modulprüfung",
+              "arbeitspartner": ["test", "test"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "semester_id": 2,
+      "course_id": 2,
+      "module_id": 1,
+      "test_daten": [
+        {
+          "group_id": 1,
+          "test_art": "Schnelltests",
+          "tests": [
+            {
+              "test_id": 1,
+              "titel": "Test 1",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            },
+            {
+              "test_id": 2,
+              "titel": "Test 2",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            },
+            {
+              "test_id": 3,
+              "titel": "Testat 3",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "semester_id": 3,
+      "course_id": 1,
+      "module_id": 4,
+      "test_daten": [
+        {
+          "group_id": 1,
+          "test_art": "Testate",
+          "tests": [
+            {
+              "test_id": 1,
+              "titel": "Testat 1",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            },
+            {
+              "test_id": 2,
+              "titel": "Testat 2",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "0",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            },
+            {
+              "test_id": 3,
+              "titel": "Testat 3",
+              "arbeitspartner": ["Marek"],
+              "erreichte_punkte": "2",
+              "max_punkte": "2",
+              "min_punkte_bestanden": "1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "course_id": 1,
+      "semester_id": 1,
+      "module_id": 2,
+      "test_daten": [],
+      "id": 4
+    },
+    {
+      "course_id": 1,
+      "semester_id": 3,
+      "module_id": 2,
+      "test_daten": [],
+      "id": 5
+    },
+    {
+      "course_id": 1,
+      "semester_id": 3,
+      "module_id": 3,
+      "test_daten": [],
+      "id": 6
+    },
+    {
+      "course_id": 1,
+      "semester_id": 3,
+      "module_id": 1,
+      "test_daten": [],
+      "id": 7
+    },
+    {
+      "course_id": 1,
+      "semester_id": 1,
+      "module_id": 3,
+      "test_daten": [],
+      "id": 8
+    },
+    {
+      "course_id": 1,
+      "semester_id": 1,
+      "module_id": 4,
+      "test_daten": [],
+      "id": 9
+    },
+    {
+      "course_id": 1,
+      "semester_id": 1,
+      "module_id": 5,
+      "test_daten": [],
+      "id": 10
+    }
+  ]
 }
