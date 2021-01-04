@@ -42,14 +42,14 @@
                 <div class="card-body">
                   <app-mark-modal
                     class="mark-active"
-                    [course_id]="course.course_id"
-                    [module_id]="course.module_id"
-                    [semester_id]="course.semester_id"
-                    [group_id]="subject.group_id"
+                    [activeCourse]="course.course_id"
+                    [activeModule]="course.module_id"
+                    [activeSemester]="course.semester_id"
+                    [groupId]="subject.group_id"
                     [tests]="tests"
-                    (getMetaById)="handleGetMetaById($event)"
-                    (handleRemoveMark)="handleRemoveMark($event)"
-                    (handleChangeMark)="handleChangeMark($event)"
+                    [marks]="marks"
+                    (removeMark)="handleRemoveMark($event)"
+                    (changeMark)="handleChangeMark($event)"
                   ></app-mark-modal>
                   <h5 class="card-title">{{ tests.titel }}</h5>
                   <p class="card-text">
@@ -98,7 +98,7 @@
             [activeModule]="activeModule"
             [activeCourse]="activeCourse"
             [activeSemester]="activeSemester"
-            (handleAddGroup)="handleAddGroup($event)"
+            (addGroup)="handleAddGroup($event)"
           ></app-addgroup-modal>
         </div>
       </div>

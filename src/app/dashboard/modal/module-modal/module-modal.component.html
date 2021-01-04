@@ -20,7 +20,11 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <form (ngSubmit)="handleChangeModule(form.value)" #form="ngForm" novalidate>
+  <form
+    (ngSubmit)="handleChangeModule(form.value, form.valid)"
+    #form="ngForm"
+    novalidate
+  >
     <div class="modal-body">
       <div class="d-flex">
         <p class="pr-3">Course-Id: {{ courseId }}</p>

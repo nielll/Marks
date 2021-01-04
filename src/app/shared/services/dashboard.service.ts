@@ -4,8 +4,8 @@ import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 
 import { Course } from '../interface/course.interface';
-import { Semester, Module } from '../interface/semester.interface';
-import { Meta, Test, Mark } from '../interface/mark.interface';
+import { Semester } from '../interface/semester.interface';
+import { Meta } from '../interface/mark.interface';
 
 const MODULES_API: string = environment.API_URL;
 
@@ -80,12 +80,12 @@ export class DashboardService {
     });
   }
 
-  removeMark(index: number) {
+  addMeta(meta: Meta): Observable<Meta> {
     const headers = new HttpHeaders()
       .set('content-type', 'application/json')
       .set('Access-Control-Allow-Origin', '*');
 
-    return this.http.delete<Meta>(`${MODULES_API}/noten/${index}`, {
+    return this.http.post<Meta>(`${MODULES_API}/noten/`, meta, {
       headers,
     });
   }
@@ -100,12 +100,12 @@ export class DashboardService {
     });
   }
 
-  addMeta(meta: Meta): Observable<Meta> {
+  removeMark(index: number): Observable<Meta> {
     const headers = new HttpHeaders()
       .set('content-type', 'application/json')
       .set('Access-Control-Allow-Origin', '*');
 
-    return this.http.post<Meta>(`${MODULES_API}/noten/`, meta, {
+    return this.http.delete<Meta>(`${MODULES_API}/noten/${index}`, {
       headers,
     });
   }

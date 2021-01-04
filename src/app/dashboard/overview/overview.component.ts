@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Course } from '../../shared/interface/course.interface';
-import { Semester, Module } from '../../shared/interface/semester.interface';
+import { Semester } from '../../shared/interface/semester.interface';
 import { Meta } from '../../shared/interface/mark.interface';
 
 @Component({
@@ -76,15 +76,8 @@ export class OverviewComponent implements OnInit, OnChanges {
     }
   }
 
-  handleModuleOnClick(subject: number, semester: number) {
-    this.changeSemester.emit(semester);
-    this.changeModule.emit(subject);
-  }
-
-  handleCourseChange(course_name: string) {
-    var course_id = this.courses.find((course) => course.titel == course_name)
-      .course_id;
-    this.changeCourse.emit(course_id);
+  changeSemesterName(semesterName: string) {
+    this.semesterName = semesterName;
   }
 
   getActiveSemester(): Semester[] {
@@ -95,8 +88,15 @@ export class OverviewComponent implements OnInit, OnChanges {
     }
   }
 
-  changeSemesterName(semesterName: string) {
-    this.semesterName = semesterName;
+  handleModuleOnClick(subject: number, semester: number) {
+    this.changeSemester.emit(semester);
+    this.changeModule.emit(subject);
+  }
+
+  handleCourseChange(course_name: string) {
+    var course_id = this.courses.find((course) => course.titel == course_name)
+      .course_id;
+    this.changeCourse.emit(course_id);
   }
 
   handleAddSemester(semesterObj: any) {

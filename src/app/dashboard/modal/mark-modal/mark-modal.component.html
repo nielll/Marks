@@ -2,7 +2,7 @@
   <button class="icon btn btn-link" (click)="open(mymodal)">
     <fa-icon [icon]="pencilIcon"></fa-icon>
   </button>
-  <button class="icon btn btn-link" (click)="handleDeletionMark(tests)">
+  <button class="icon btn btn-link" (click)="handleRemoveMark(tests)">
     <fa-icon [icon]="eraseIcon"></fa-icon>
   </button>
 </div>
@@ -21,23 +21,16 @@
     </button>
   </div>
   <form
-    (ngSubmit)="
-      handleSubmitUpdateMark(
-        form.value,
-        form.valid,
-        course_id,
-        semester_id,
-        module_id,
-        group_id
-      )
-    "
+    (ngSubmit)="handleChangeMark(form.value, form.valid)"
     #form="ngForm"
     novalidate
   >
     <div class="modal-body">
       <div class="d-flex">
-        <p class="pr-3">Course-Id: {{ course_id }}</p>
-        <p class="pr-3">Module-Id: {{ group_id }}</p>
+        <p class="pr-3">Course-Id: {{ activeCourse }}</p>
+        <p class="pr-3">Semester-Id: {{ activeSemester }}</p>
+        <p class="pr-3">Module-Id: {{ activeModule }}</p>
+        <p class="pr-3">Group-Id: {{ groupId }}</p>
         <p class="d-flex">
           Mark-Id:
           <input

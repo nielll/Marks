@@ -41,7 +41,7 @@ export class AddSemesterModalComponent implements OnInit {
     }
   }
 
-  createNewSemesterId(): number {
+  private createNewSemesterId(): number {
     return this.semesters.length > 0
       ? this.semesters.reduce((prev, curr) => (prev.id < curr.id ? curr : prev))
           .id + 1

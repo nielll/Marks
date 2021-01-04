@@ -3,11 +3,9 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
-  ChangeDetectorRef,
 } from '@angular/core';
-import { Meta, Test, Mark } from '../../shared/interface/mark.interface';
+import { Meta } from '../../shared/interface/mark.interface';
 
 @Component({
   selector: 'app-marks',
@@ -15,7 +13,7 @@ import { Meta, Test, Mark } from '../../shared/interface/mark.interface';
   styleUrls: ['./marks.component.scss'],
 })
 export class MarksComponent implements OnChanges {
-  constructor(private ref: ChangeDetectorRef) {}
+  constructor() {}
 
   @Input()
   marks: Meta[];
@@ -42,25 +40,22 @@ export class MarksComponent implements OnChanges {
   updateActiveModuleName: EventEmitter<void> = new EventEmitter<void>();
 
   @Output()
-  addMark: EventEmitter<any> = new EventEmitter<any>();
+  addMark: EventEmitter<Meta> = new EventEmitter<Meta>();
 
   @Output()
-  changeMark: EventEmitter<any> = new EventEmitter<any>();
+  changeMark: EventEmitter<Meta> = new EventEmitter<Meta>();
 
   @Output()
-  removeMark: EventEmitter<any> = new EventEmitter<any>();
+  removeMark: EventEmitter<Meta> = new EventEmitter<Meta>();
 
   @Output()
-  addGroup: EventEmitter<any> = new EventEmitter<any>();
+  addGroup: EventEmitter<Meta> = new EventEmitter<Meta>();
 
   @Output()
-  removeGroup: EventEmitter<any> = new EventEmitter<any>();
+  removeGroup: EventEmitter<Meta> = new EventEmitter<Meta>();
 
   @Output()
-  changeGroup: EventEmitter<any> = new EventEmitter<any>();
-
-  @Output()
-  setMetaById: EventEmitter<Meta> = new EventEmitter<Meta>();
+  changeGroup: EventEmitter<Meta> = new EventEmitter<Meta>();
 
   ngOnChanges(changes) {}
 
@@ -69,38 +64,34 @@ export class MarksComponent implements OnChanges {
       return this.marks
         .map(
           (marks) =>
-            +marks.module_id == this.activeModule &&
-            +marks.semester_id == this.activeSemester &&
+            marks.module_id == this.activeModule &&
+            marks.semester_id == this.activeSemester &&
             marks
         )
         .filter((marks) => marks);
     }
   }
 
-  handleGetMetaById(meta: Meta) {
-    this.setMetaById.emit(meta);
+  handleAddMark(metaObj: Meta) {
+    this.addMark.emit(metaObj);
   }
 
-  handleAddMark(markObj: any) {
-    this.addMark.emit(markObj);
+  handleChangeMark(metaObj: Meta) {
+    this.changeMark.emit(metaObj);
   }
 
-  handleChangeMark(markObj: any) {
-    this.changeMark.emit(markObj);
+  handleRemoveMark(metaObj: Meta) {
+    this.removeMark.emit(metaObj);
+  }
+  handleAddGroup(metaObj: Meta) {
+    this.addGroup.emit(metaObj);
   }
 
-  handleRemoveMark(markObj: any) {
-    this.removeMark.emit(markObj);
-  }
-  handleAddGroup(groupObj: any) {
-    this.addGroup.emit(groupObj);
+  handleChangeGroup(metaObj: Meta) {
+    this.changeGroup.emit(metaObj);
   }
 
-  handleChangeGroup(groupObj: any) {
-    this.changeGroup.emit(groupObj);
-  }
-
-  handleRemoveGroup(groupObj: any) {
-    this.removeGroup.emit(groupObj);
+  handleRemoveGroup(metaObj: Meta) {
+    this.removeGroup.emit(metaObj);
   }
 }

@@ -10,7 +10,7 @@ import {
   IconDefinition,
   faPlus,
 } from '@fortawesome/free-solid-svg-icons';
-import { Meta, Mark, Test } from '../../../shared/interface/mark.interface';
+import { Meta, Test } from '../../../shared/interface/mark.interface';
 import { Metas, Tests, Marks } from '../../../shared/models/mark.model';
 
 @Component({
@@ -62,17 +62,6 @@ export class GroupModalComponent implements OnInit {
 
   ngOnChanges(changes) {}
 
-  open(content) {
-    this.modalService.open(content, this.modalOptions).result.then(
-      (result) => {
-        this.closeResult = `Closed with: ${result}`;
-      },
-      (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      }
-    );
-  }
-
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -83,7 +72,7 @@ export class GroupModalComponent implements OnInit {
     }
   }
 
-  getActiveMeta(): Meta {
+  private getActiveMeta(): Meta {
     return this.marks.find(
       (meta) =>
         meta.course_id == this.activeCourse &&
@@ -92,7 +81,14 @@ export class GroupModalComponent implements OnInit {
     );
   }
 
-  createNewMarkId(group_id: number): number {
+  private createNewMetaId(): number {
+    return this.marks.length > 0
+      ? this.marks.reduce((prev, curr) => (prev.id < curr.id ? curr : prev))
+          .id + 1
+      : 1;
+  }
+
+  private createNewMarkId(group_id: number): number {
     const activeMeta = this.getActiveMeta();
     const tests = activeMeta.test_daten.find(
       (group) => group.group_id == group_id
@@ -105,91 +101,111 @@ export class GroupModalComponent implements OnInit {
       : 1;
   }
 
+  private getSpecificMeta(): Meta {
+    // return meta if exists for a module, if not create one
+    return (
+      this.marks.find(
+        (meta) =>
+          meta.course_id == this.activeCourse &&
+          meta.semester_id == this.activeSemester &&
+          meta.module_id == this.activeModule
+      ) ||
+      new Metas(
+        this.activeCourse,
+        this.activeSemester,
+        this.activeModule,
+        [],
+        this.createNewMetaId()
+      )
+    );
+  }
+
+  private getTestIndex(meta: Meta): number {
+    return meta.test_daten.findIndex((group) => group.group_id == this.groupId);
+  }
+
+  private getGroupIndex(meta: Meta): number {
+    return meta.test_daten.findIndex((group) => group.group_id == this.groupId);
+  }
+
+  open(content) {
+    this.modalService.open(content, this.modalOptions).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    );
+  }
+
   handleAddMark(
-    values: any,
-    isValid,
-    course_id: number,
-    semester_id: number,
-    module_id: number,
-    group_id: number
+    {
+      titel,
+      arbeitspartner,
+      erreichte_punkte,
+      max_punkte,
+      min_punkte_bestanden,
+    },
+    isValid
   ) {
     if (isValid) {
-      // create Array from input
-      if (!values.arbeitspartner) {
-        values.arbeitspartner = [];
-      } else if (!Array.isArray(values.arbeitspartner)) {
-        values.arbeitspartner = String(values.arbeitspartner)
+      // create Array from Team input
+      if (!arbeitspartner) {
+        arbeitspartner = [];
+      } else if (!Array.isArray(arbeitspartner)) {
+        arbeitspartner = String(arbeitspartner)
           .split(/[\s]{0,}[,][\s]{0,}/)
           .filter((partner) => partner.length > 0);
       } else {
-        values.arbeitspartner = values.arbeitspartner.filter(
-          (partner) => partner.length > 0
-        );
+        arbeitspartner = arbeitspartner.filter((partner) => partner.length > 0);
       }
 
-      const {
+      //create Mark with input values
+      const newMark = new Marks(
+        this.createNewMarkId(this.groupId),
         titel,
         arbeitspartner,
         erreichte_punkte,
         max_punkte,
-        min_punkte_bestanden,
-      } = values;
+        min_punkte_bestanden
+      );
 
-      const markObj = {
-        course_id,
-        semester_id,
-        module_id,
-        group_id,
-        updateableMark: new Marks(
-          this.createNewMarkId(this.groupId),
-          titel,
-          arbeitspartner,
-          erreichte_punkte,
-          max_punkte,
-          min_punkte_bestanden
-        ),
-      };
+      // update local data
+      const updateableMeta = this.getSpecificMeta();
+      updateableMeta.test_daten
+        .find((groups) => groups.group_id == this.groupId)
+        .tests.push(newMark);
 
-      this.addMark.emit(markObj);
+      this.addMark.emit(updateableMeta);
     }
   }
 
-  handleRemoveGroup(groupId: number) {
+  handleRemoveGroup() {
     let confirmDeletion = confirm('Willst du die Gruppierung löschen?');
     if (!confirmDeletion) return;
 
-    const groupObj = {
-      course_id: this.activeCourse,
-      semester_id: this.activeSemester,
-      module_id: this.activeModule,
-      group_id: groupId,
-    };
+    let updateableMeta = this.getSpecificMeta();
+    updateableMeta.test_daten.splice(this.getTestIndex(updateableMeta), 1);
 
-    this.removeGroup.emit(groupObj);
+    this.removeGroup.emit(updateableMeta);
   }
 
-  handleSubmitGroupChange(values: any) {
-    const activeMeta = this.marks.find(
-      (meta) =>
-        meta.course_id == this.activeCourse &&
-        meta.semester_id == this.activeSemester &&
-        meta.module_id == this.activeModule
-    );
+  handleChangeGroup({ test_art }, isValid: boolean) {
+    if (isValid) {
+      let updateableMeta = this.getSpecificMeta();
 
-    const tests = activeMeta.test_daten.find(
-      (group) => group.group_id == this.groupId
-    ).tests;
+      const marks = updateableMeta.test_daten.find(
+        (group) => group.group_id == this.groupId
+      ).tests;
 
-    const updateableGroup = new Tests(values.group_id, values.test_art, tests);
+      updateableMeta.test_daten.splice(
+        this.getGroupIndex(updateableMeta),
+        1,
+        new Tests(this.groupId, test_art, marks)
+      );
 
-    const groupObj = {
-      course_id: this.activeCourse,
-      semester_id: this.activeSemester,
-      module_id: this.activeModule,
-      group_id: values.group_id,
-      updateableGroup,
-    };
-
-    this.changeGroup.emit(groupObj);
+      this.changeGroup.emit(updateableMeta);
+    }
   }
 }

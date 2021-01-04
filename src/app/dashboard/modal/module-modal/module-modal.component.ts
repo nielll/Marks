@@ -11,7 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Meta } from 'src/app/shared/interface/mark.interface';
 import { Semester, Module } from 'src/app/shared/interface/semester.interface';
-import { Modules, Semesters } from '../../../shared/models/semester.model';
+import { Modules } from '../../../shared/models/semester.model';
 
 @Component({
   selector: 'app-module-modal',
@@ -53,6 +53,50 @@ export class ModuleModalComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  private getUpdateableSemester(): Semester {
+    return this.semesters.find(
+      (semester) =>
+        semester.course_id == this.courseId &&
+        semester.semester_id == this.semesterId
+    );
+  }
+
+  private getIndexModule(): number {
+    return this.getUpdateableSemester().module.findIndex(
+      (module) => module.module_id == this.subject.module_id
+    );
+  }
+
+  private getIndexMark(): number {
+    return this.marks.findIndex(
+      (mark) =>
+        mark.course_id == this.courseId &&
+        mark.semester_id == this.semesterId &&
+        mark.module_id == this.subject.module_id
+    );
+  }
+
+  private getMarkId(): number {
+    return (
+      this.marks.find(
+        (mark) =>
+          mark.course_id == this.courseId &&
+          mark.semester_id == this.semesterId &&
+          mark.module_id == this.subject.module_id
+      )?.id || null
+    );
+  }
+
   open(content) {
     this.modalService.open(content, this.modalOptions).result.then(
       (result) => {
@@ -64,72 +108,30 @@ export class ModuleModalComponent implements OnInit {
     );
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
+  handleChangeModule(values: any, isValid: boolean) {
+    if (isValid) {
+      const updatedModule = new Modules(
+        this.subject.module_id,
+        values.titelModule,
+        values.beschreibungModule
+      );
+
+      let updateableSemester = this.getUpdateableSemester();
+      updateableSemester.module.splice(this.getIndexModule(), 1, updatedModule);
+
+      const semesterObj = {
+        updateableSemester,
+      };
+
+      this.changeModule.emit(semesterObj);
+
+      // Update local state
+      this.getUpdateableSemester().module.splice(
+        this.getIndexModule(),
+        1,
+        updatedModule
+      );
     }
-  }
-
-  getUpdateableSemester(): Semester {
-    return this.semesters.find(
-      (semester) =>
-        semester.course_id == this.courseId &&
-        semester.semester_id == this.semesterId
-    );
-  }
-
-  getIndexModule(): number {
-    return this.getUpdateableSemester().module.findIndex(
-      (module) => module.module_id == this.subject.module_id
-    );
-  }
-
-  getIndexMark(): number {
-    return this.marks.findIndex(
-      (mark) =>
-        mark.course_id == this.courseId &&
-        mark.semester_id == this.semesterId &&
-        mark.module_id == this.subject.module_id
-    );
-  }
-
-  getMarkId(): number {
-    return (
-      this.marks.find(
-        (mark) =>
-          mark.course_id == this.courseId &&
-          mark.semester_id == this.semesterId &&
-          mark.module_id == this.subject.module_id
-      )?.id || null
-    );
-  }
-
-  handleChangeModule(values: any) {
-    const updatedModule = new Modules(
-      this.subject.module_id,
-      values.titelModule,
-      values.beschreibungModule
-    );
-
-    let updateableSemester = this.getUpdateableSemester();
-    updateableSemester.module.splice(this.getIndexModule(), 1, updatedModule);
-
-    const semesterObj = {
-      updateableSemester,
-    };
-
-    this.changeModule.emit(semesterObj);
-
-    // Update local state
-    this.getUpdateableSemester().module.splice(
-      this.getIndexModule(),
-      1,
-      updatedModule
-    );
   }
 
   handleRemoveModule() {

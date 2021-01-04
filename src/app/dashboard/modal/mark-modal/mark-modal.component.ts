@@ -10,7 +10,7 @@ import {
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 import { Meta, Mark } from '../../../shared/interface/mark.interface';
-import { Metas, Tests, Marks } from '../../../shared/models/mark.model';
+import { Metas, Marks } from '../../../shared/models/mark.model';
 
 @Component({
   selector: 'app-mark-modal',
@@ -30,31 +30,31 @@ export class MarkModalComponent implements OnInit {
   }
 
   @Input()
+  marks: Meta[];
+
+  @Input()
   tests: Mark;
 
   @Input()
-  course_id: number;
+  activeCourse: number;
 
   @Input()
-  module_id: number;
+  activeSemester: number;
 
   @Input()
-  semester_id: number;
+  activeModule: number;
 
   @Input()
-  group_id: number;
+  groupId: number;
 
   @Output()
-  handleChangeMark: EventEmitter<any> = new EventEmitter<Mark>();
+  changeMark: EventEmitter<any> = new EventEmitter<Mark>();
 
   @Output()
-  handleRemoveMark: EventEmitter<any> = new EventEmitter<Mark>();
+  removeMark: EventEmitter<any> = new EventEmitter<Mark>();
 
   @Output()
   handleMetaById: EventEmitter<Meta> = new EventEmitter<Meta>();
-
-  @Output()
-  getMarkById: EventEmitter<number> = new EventEmitter<number>();
 
   ngOnInit(): void {}
 
@@ -62,6 +62,48 @@ export class MarkModalComponent implements OnInit {
     if (changes) {
       this.tests = changes.tests.currentValue;
     }
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  private createNewMetaId(): number {
+    return this.marks.length > 0
+      ? this.marks.reduce((prev, curr) => (prev.id < curr.id ? curr : prev))
+          .id + 1
+      : 1;
+  }
+
+  private getSpecificMeta(): Meta {
+    // return meta if exists for a module, if not create one
+    return (
+      this.marks.find(
+        (meta) =>
+          meta.course_id == this.activeCourse &&
+          meta.semester_id == this.activeSemester &&
+          meta.module_id == this.activeModule
+      ) ||
+      new Metas(
+        this.activeCourse,
+        this.activeSemester,
+        this.activeModule,
+        [],
+        this.createNewMetaId()
+      )
+    );
+  }
+
+  private getMarkIndex(metaObj: Meta, markObj: Mark): number {
+    return metaObj.test_daten
+      .find((groups) => groups.group_id == this.groupId)
+      .tests.findIndex((tests) => tests.test_id == markObj.test_id);
   }
 
   open(content) {
@@ -75,78 +117,58 @@ export class MarkModalComponent implements OnInit {
     );
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
-
-  handleDeletionMark(mark: Mark) {
+  handleRemoveMark(mark: Mark) {
     let confirmDeletion = confirm('Willst du die Note wirklich löschen?');
     if (!confirmDeletion) return;
 
-    const markObj = {
-      course_id: this.course_id,
-      semester_id: this.semester_id,
-      module_id: this.module_id,
-      group_id: this.group_id,
-      updateableMark: mark,
-    };
+    let updateableMeta = this.getSpecificMeta();
 
-    this.handleRemoveMark.emit(markObj);
+    updateableMeta.test_daten
+      .find((groups) => groups.group_id == this.groupId)
+      .tests.splice(this.getMarkIndex(updateableMeta, mark), 1);
+
+    this.removeMark.emit(updateableMeta);
   }
 
-  handleSubmitUpdateMark(
-    values: any,
-    isValid: boolean,
-    course_id: number,
-    semester_id: number,
-    module_id: number,
-    group_id: number
+  handleChangeMark(
+    {
+      test_id,
+      titel,
+      arbeitspartner,
+      erreichte_punkte,
+      max_punkte,
+      min_punkte_bestanden,
+    },
+    isValid: boolean
   ) {
     if (isValid) {
       // create Array from input
-      if (values.arbeitspartner.length == 0) {
-        values.arbeitspartner = [];
-      } else if (!Array.isArray(values.arbeitspartner)) {
-        values.arbeitspartner = String(values.arbeitspartner)
+      if (arbeitspartner.length == 0) {
+        arbeitspartner = [];
+      } else if (!Array.isArray(arbeitspartner)) {
+        arbeitspartner = String(arbeitspartner)
           .split(/[\s]{0,}[,][\s]{0,}/)
           .filter((partner) => partner.length > 0);
       } else {
-        values.arbeitspartner = values.arbeitspartner.filter(
-          (partner) => partner.length > 0
-        );
+        arbeitspartner = arbeitspartner.filter((partner) => partner.length > 0);
       }
 
-      const {
+      let updateableMeta = this.getSpecificMeta();
+
+      const newMark = new Marks(
         test_id,
         titel,
         arbeitspartner,
         erreichte_punkte,
         max_punkte,
-        min_punkte_bestanden,
-      } = values;
+        min_punkte_bestanden
+      );
 
-      const markObj = {
-        course_id,
-        semester_id,
-        module_id,
-        group_id,
-        updateableMark: new Marks(
-          test_id,
-          titel,
-          arbeitspartner,
-          erreichte_punkte,
-          max_punkte,
-          min_punkte_bestanden
-        ),
-      };
+      updateableMeta.test_daten
+        .find((groups) => groups.group_id == this.groupId)
+        .tests.splice(this.getMarkIndex(updateableMeta, newMark), 1, newMark);
 
-      this.handleChangeMark.emit(markObj);
+      this.changeMark.emit(updateableMeta);
     }
   }
 }

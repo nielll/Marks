@@ -5,7 +5,7 @@
   <button class="icon btn btn-link" (click)="open(modal_edit)">
     <fa-icon [icon]="pencilIcon"></fa-icon>
   </button>
-  <button class="icon btn btn-link" (click)="handleRemoveGroup(groupId)">
+  <button class="icon btn btn-link" (click)="handleRemoveGroup()">
     <fa-icon [icon]="eraseIcon"></fa-icon>
   </button>
 </div>
@@ -117,11 +117,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <form
-    (ngSubmit)="handleSubmitGroupChange(form.value)"
-    #form="ngForm"
-    novalidate
-  >
+  <form (ngSubmit)="handleChangeGroup(form.value)" #form="ngForm" novalidate>
     <div class="modal-body">
       <div class="d-flex">
         <div class="d-flex">

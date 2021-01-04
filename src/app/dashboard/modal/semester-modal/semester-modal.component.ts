@@ -71,17 +71,6 @@ export class SemesterModalComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  open(content) {
-    this.modalService.open(content, this.modalOptions).result.then(
-      (result) => {
-        this.closeResult = `Closed with: ${result}`;
-      },
-      (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      }
-    );
-  }
-
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -92,14 +81,14 @@ export class SemesterModalComponent implements OnInit {
     }
   }
 
-  createNewMarkId(): number {
+  private createNewMarkId(): number {
     return this.marks.length > 0
       ? this.marks.reduce((prev, curr) => (prev.id < curr.id ? curr : prev))
           .id + 1
       : 1;
   }
 
-  getIndexOfSemester(semesterObj: Semester): number {
+  private getIndexOfSemester(semesterObj: Semester): number {
     return this.semesters.findIndex(
       (semester) =>
         semester.course_id == semesterObj.course_id &&
@@ -108,14 +97,14 @@ export class SemesterModalComponent implements OnInit {
     );
   }
 
-  getUpdatedMarksArray(): Meta[] {
+  private getUpdatedMarksArray(): Meta[] {
     return this.marks.filter(
       (marks) =>
         marks.course_id != this.courseId || marks.semester_id != this.semesterId
     );
   }
 
-  getNewModuleId(): number {
+  private getNewModuleId(): number {
     return this.semesters.find(
       (semester) =>
         semester.course_id == this.courseId &&
@@ -133,11 +122,22 @@ export class SemesterModalComponent implements OnInit {
       : 1;
   }
 
-  getUpdateableSemester(): Semester {
+  private getUpdateableSemester(): Semester {
     return this.semesters.find(
       (semester) =>
         semester.course_id == this.courseId &&
         semester.semester_id == this.semesterId
+    );
+  }
+
+  open(content) {
+    this.modalService.open(content, this.modalOptions).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
     );
   }
 
@@ -167,15 +167,17 @@ export class SemesterModalComponent implements OnInit {
     this.addModule.emit(semesterObj);
   }
 
-  handleChangeSemester(values: any) {
-    this.changeSemesterName.emit(values.bezeichnung);
+  handleChangeSemester(values: any, isValid: boolean) {
+    if (isValid) {
+      this.changeSemesterName.emit(values.bezeichnung);
 
-    let updateableSemester = this.getUpdateableSemester();
+      let updateableSemester = this.getUpdateableSemester();
 
-    updateableSemester.name = values.bezeichnung;
+      updateableSemester.name = values.bezeichnung;
 
-    // send informations to update api upwards
-    this.changeSemester.emit(updateableSemester);
+      // send informations to update api upwards
+      this.changeSemester.emit(updateableSemester);
+    }
   }
 
   handleRemoveSemester() {
