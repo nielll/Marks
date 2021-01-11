@@ -1,1 +1,115 @@
-<p>module-modal works!</p>
+<div class="topcontainter">
+  <button class="icon btn btn-link" (click)="open(addCourse)">
+    <fa-icon [icon]="plusIcon"></fa-icon>
+  </button>
+  <button class="icon btn btn-link" (click)="open(changeCourse)">
+    <fa-icon [icon]="pencilIcon"></fa-icon>
+  </button>
+  <button class="icon btn btn-link" (click)="handleRemoveCourse()">
+    <fa-icon [icon]="eraseIcon"></fa-icon>
+  </button>
+</div>
+
+<!-- Modal -->
+<ng-template #addCourse let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Kurs hinzufügen</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form
+    (ngSubmit)="handleAddCourse(form.value, form.valid)"
+    #form="ngForm"
+    novalidate
+  >
+    <div class="modal-body">
+      <div class="d-flex"></div>
+      <div>
+        <label for="partner">Titel:&nbsp;</label>
+        <input
+          id="CourseTitelname"
+          type="text"
+          name="CourseTitelname"
+          [ngModel]=""
+          required
+        />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Zurück
+      </button>
+      <button
+        type="submit"
+        class="btn btn-outline-dark"
+        (click)="modal.close('Save click')"
+        [disabled]="form.invalid"
+      >
+        Ändern
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<!-- Modal -->
+<ng-template #changeCourse let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Kursname ändern</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form
+    (ngSubmit)="handleChangeCourse(form.value, form.valid)"
+    #form="ngForm"
+    novalidate
+  >
+    <div class="modal-body">
+      <div class="d-flex">
+        <p class="pr-3">Course-Id: {{ courseId }}</p>
+      </div>
+      <div>
+        <label for="partner">Kursname:&nbsp;</label>
+        <input
+          id="courseTitel"
+          type="text"
+          name="courseTitel"
+          [ngModel]="course?.titel"
+          required
+        />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Zurück
+      </button>
+      <button
+        type="submit"
+        class="btn btn-outline-dark"
+        (click)="modal.close('Save click')"
+        [disabled]="form.invalid"
+      >
+        Ändern
+      </button>
+    </div>
+  </form>
+</ng-template>
