@@ -1,20 +1,8 @@
 <div class="position-relative mb-4 mt-4">
   <div id="overview"></div>
   <h2>Kurse und Module</h2>
-  <div class="course-wrapper mb-4">
-    <div class="pb-1 d-flex">
-      <label class="d-flex course-label" for="kurs">Kurse: </label>
-      <app-course-modal
-        class="course-modal"
-        [courseId]="activeCourse"
-        [courses]="courses"
-        [semesters]="semesters"
-        [marks]="marks"
-        (addCourse)="handleAddCourse($event)"
-        (changeCourse)="handleChangingCourse($event)"
-        (removeCourse)="handleRemoveCourse($event)"
-      ></app-course-modal>
-    </div>
+  <div class="mb-4">
+    <label for="kurs">Kurse: </label>
     <div style="clear: both"></div>
     <select
       id="kurs"

@@ -117,11 +117,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <form
-    (ngSubmit)="handleChangeGroup(form.value, form.valid)"
-    #form="ngForm"
-    novalidate
-  >
+  <form (ngSubmit)="handleChangeGroup(form.value)" #form="ngForm" novalidate>
     <div class="modal-body">
       <div class="d-flex">
         <div class="d-flex">

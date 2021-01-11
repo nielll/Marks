@@ -83,7 +83,6 @@ export class MarksComponent implements OnChanges {
   handleRemoveMark(metaObj: Meta) {
     this.removeMark.emit(metaObj);
   }
-
   handleAddGroup(metaObj: Meta) {
     this.addGroup.emit(metaObj);
   }

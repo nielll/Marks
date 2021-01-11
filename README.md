@@ -5,7 +5,6 @@ Primary goal of this webapplication is to provide a platform to save and track y
 Get first impression here: https://marks-app.netlify.com
 
 How to run locally:
-
 `npm run api` => run json-server on Port 3001
 
 `npm run start` => run webapp on Port 4200

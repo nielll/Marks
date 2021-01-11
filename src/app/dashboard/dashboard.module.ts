@@ -16,7 +16,6 @@ import { AddGroupModalComponent } from './modal/addGroup-modal/addGroup-modal.co
 import { SemesterModalComponent } from './modal/semester-modal/semester-modal.component';
 import { AddSemesterModalComponent } from './modal/addSemester-modal/addSemester-modal.component';
 import { ModuleModalComponent } from './modal/module-modal/module-modal.component';
-import { CourseModalComponent } from './modal/course-modal/course-modal.component';
 
 // module
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -37,7 +36,6 @@ import { DashboardService } from '../shared/services/dashboard.service';
     SemesterModalComponent,
     AddSemesterModalComponent,
     ModuleModalComponent,
-    CourseModalComponent,
   ],
   imports: [
     CommonModule,

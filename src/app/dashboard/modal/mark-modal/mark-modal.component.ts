@@ -58,7 +58,11 @@ export class MarkModalComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  ngOnChanges(changes) {}
+  ngOnChanges(changes) {
+    if (changes) {
+      this.tests = changes.tests.currentValue;
+    }
+  }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
