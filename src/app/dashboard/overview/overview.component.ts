@@ -68,11 +68,24 @@ export class OverviewComponent implements OnInit, OnChanges {
   @Output()
   removeModule: EventEmitter<any> = new EventEmitter<any>();
 
+  @Output()
+  addCourse: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  changingCourse: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  removeCourse: EventEmitter<any> = new EventEmitter<any>();
+
   ngOnInit(): void {}
 
   ngOnChanges(changes) {
+    console.log(changes);
     if (changes.semesters && changes.semesters.currentValue) {
       this.semesterName = changes.semesters.currentValue.name;
+    }
+    if (changes.courses && changes.courses.currentValue) {
+      this.courses = changes.courses.currentValue;
     }
   }
 
@@ -121,5 +134,17 @@ export class OverviewComponent implements OnInit, OnChanges {
 
   handleRemoveModule(moduleObj: any) {
     this.removeModule.emit(moduleObj);
+  }
+
+  handleAddCourse(courseObj: any) {
+    this.addCourse.emit(courseObj);
+  }
+
+  handleChangingCourse(courseObj: any) {
+    this.changingCourse.emit(courseObj);
+  }
+
+  handleRemoveCourse(courseObj: any) {
+    this.removeCourse.emit(courseObj);
   }
 }

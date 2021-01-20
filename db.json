@@ -85,19 +85,6 @@
           "beschreibung": "lorem ipsum dolores"
         }
       ]
-    },
-    {
-      "id": 4,
-      "semester_id": 4,
-      "course_id": 1,
-      "name": "Semester",
-      "module": [
-        {
-          "module_id": 1,
-          "name": "Test",
-          "beschreibung": "Test"
-        }
-      ]
     }
   ],
   "noten": [
@@ -114,10 +101,7 @@
             {
               "test_id": 1,
               "titel": "Testat 1",
-              "arbeitspartner": [
-                "Ramon",
-                "Timon"
-              ],
+              "arbeitspartner": ["Ramon", "Timon"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -125,9 +109,7 @@
             {
               "test_id": 2,
               "titel": "Testat 2",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -135,9 +117,7 @@
             {
               "test_id": 3,
               "titel": "Testat 3",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -151,10 +131,7 @@
             {
               "test_id": 1,
               "titel": "Modulprüfung",
-              "arbeitspartner": [
-                "test",
-                "test"
-              ],
+              "arbeitspartner": ["test", "test"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -176,9 +153,7 @@
             {
               "test_id": 1,
               "titel": "Test 1",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -186,9 +161,7 @@
             {
               "test_id": 2,
               "titel": "Test 2",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -196,9 +169,7 @@
             {
               "test_id": 3,
               "titel": "Testat 3",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -220,9 +191,7 @@
             {
               "test_id": 1,
               "titel": "Testat 1",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -230,9 +199,7 @@
             {
               "test_id": 2,
               "titel": "Testat 2",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "0",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -240,9 +207,7 @@
             {
               "test_id": 3,
               "titel": "Testat 3",
-              "arbeitspartner": [
-                "Marek"
-              ],
+              "arbeitspartner": ["Marek"],
               "erreichte_punkte": "2",
               "max_punkte": "2",
               "min_punkte_bestanden": "1"
@@ -299,30 +264,6 @@
       "module_id": 5,
       "test_daten": [],
       "id": 10
-    },
-    {
-      "course_id": 1,
-      "semester_id": 4,
-      "module_id": 1,
-      "test_daten": [
-        {
-          "group_id": 1,
-          "test_art": "Test",
-          "tests": [
-            {
-              "test_id": 1,
-              "titel": "Testat",
-              "arbeitspartner": [
-                "Marek"
-              ],
-              "erreichte_punkte": "1",
-              "max_punkte": "2",
-              "min_punkte_bestanden": "1"
-            }
-          ]
-        }
-      ],
-      "id": 11
     }
   ]
 }

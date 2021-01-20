@@ -44,7 +44,35 @@ export class DashboardService {
     );
   }
 
-  updateCourse() {}
+  addCourse(course: Course): Observable<Course> {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*');
+
+    return this.http.post<Course>(`${MODULES_API}/kurse/`, course, {
+      headers,
+    });
+  }
+
+  updateCourse(course: Course, index: number): Observable<Course> {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*');
+
+    return this.http.put<Course>(`${MODULES_API}/kurse/${index}`, course, {
+      headers,
+    });
+  }
+
+  removeCourse(index: number): Observable<Course> {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*');
+
+    return this.http.delete<Course>(`${MODULES_API}/kurse/${index}`, {
+      headers,
+    });
+  }
 
   addSemester(semesterObj: Semester): Observable<Semester> {
     const headers = new HttpHeaders()

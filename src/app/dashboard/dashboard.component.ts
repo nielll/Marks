@@ -106,7 +106,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private getFirstCourse(data: Course[]): number {
-    return (this.activeCourse = data[0].course_id);
+    return (this.activeCourse = data[0]?.course_id);
   }
 
   private getFirstModuleByCourseId(): any {
@@ -384,5 +384,103 @@ export class DashboardComponent implements OnInit {
     // set active to null
     this.activeSemester = null;
     this.activeModule = null;
+  }
+
+  addCourse(updateableCourse) {
+    try {
+      this.moduleService.addCourse(updateableCourse).subscribe((e) => {
+        this.toastr.success('Course has been added successfully!');
+
+        //update local state
+        this.course.push(updateableCourse);
+        if (!this.activeCourse)
+          this.activeCourse = this.getFirstCourse(this.course);
+      });
+    } catch (e) {
+      this.toastr.error('Error has been detected during course adding process');
+      throw new Error(e);
+    }
+  }
+
+  changeCourse({ updateableCourse, index }) {
+    try {
+      this.moduleService
+        .updateCourse(updateableCourse, (updateableCourse as Course).id)
+        .subscribe((e) => {
+          this.toastr.success('Course has been changed successfully!');
+
+          //update local state
+          this.course.splice(index, 1, updateableCourse);
+        });
+    } catch (e) {
+      this.toastr.error('Error has been detected during course adding process');
+      throw new Error(e);
+    }
+  }
+
+  removeCourse({ courseIndex, removableSemesters, removableMarks }) {
+    let promises = [];
+
+    // remove Course => add to promises
+    promises.push(
+      new Promise((resolve, reject) => {
+        this.moduleService
+          .removeCourse(courseIndex)
+          .subscribe((e) => resolve(e));
+      })
+    );
+
+    // delete all the semester related to the course => add promises to array
+    for (let i = 0; i < removableSemesters.length; i++) {
+      promises.push(
+        new Promise((resolve, reject) => {
+          this.moduleService
+            .removeSemester(removableSemesters[i].id)
+            .subscribe((e) => resolve(e));
+        })
+      );
+    }
+
+    // delete all the semester related to the course => add promises to array
+    for (let i = 0; i < removableMarks.length; i++) {
+      promises.push(
+        new Promise((resolve, reject) => {
+          this.moduleService
+            .removeMark(removableMarks[i].id)
+            .subscribe((e) => resolve(e));
+        })
+      );
+    }
+
+    Promise.all(promises)
+      .then((e) => {
+        this.toastr.success('Course has been removed successfully!');
+
+        //update local state
+        this.course = this.course.filter((course) => course.id != courseIndex);
+        this.semesters = this.semesters.filter((semester) =>
+          (removableSemesters as Semester[]).find(
+            (delSemester) => delSemester.course_id != semester.course_id
+          )
+        );
+        this.marks = this.marks.filter((marks) =>
+          (removableMarks as Meta[]).find(
+            (delMeta) => delMeta.course_id != marks.course_id
+          )
+        );
+
+        //update active object id's
+        this.activeCourse = this.getFirstCourse(this.course);
+        this.activeSemester = this.getFirstSemesterByCourseId();
+        this.activeModule =
+          this.getFirstModuleByCourseId() != null
+            ? this.getFirstModuleByCourseId()
+            : null;
+      })
+
+      .catch((e) => {
+        this.toastr.error('Error during course deletion process');
+        throw new Error(e);
+      });
   }
 }

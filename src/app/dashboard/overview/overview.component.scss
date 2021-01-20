@@ -112,3 +112,16 @@ ul {
 .selected:hover .module-control {
   visibility: visible;
 }
+
+.course-label {
+  align-items: center;
+  margin: 0;
+}
+
+.course-modal {
+  visibility: hidden;
+}
+
+.course-wrapper:hover .course-modal {
+  visibility: visible;
+}
